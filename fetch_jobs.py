@@ -194,11 +194,17 @@ def skistar():
         jobs.append({
             "id": "S" + j[:j.find("'")], "title": dec(g("title")), "employer": "SkiStar",
             "place": place, "muni": place, "lat": pos[0], "lon": pos[1], "occ": "", "type": typ, "hours": "",
-            "deadline": (g("to_date") or "")[:10] or None, "published": (g("published_date") or "")[:10] or None,
+            "deadline": sv_date(dec(g("to_date"))), "published": sv_date(dec(g("published_date"))),
             "desc": dec(g("summary")), "remote": False,
             "sources": [{"name": "SkiStar", "url": "https://emp.jobylon.com" + g("url")}],
         })
     return jobs
+
+SV_MONTHS = {m: i+1 for i, m in enumerate(["januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"])}
+def sv_date(s):
+    m = re.match(r"(\d{1,2}) ([a-zåäö]+) (\d{4})", (s or "").strip().lower())
+    if not m or m.group(2) not in SV_MONTHS: return None
+    return f"{m.group(3)}-{SV_MONTHS[m.group(2)]:02d}-{int(m.group(1)):02d}"
 
 def norm(s):
     s = (s or "").lower()

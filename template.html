@@ -218,7 +218,7 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
     </div>
     <div class="filters">
       <input type="search" id="fText" placeholder="Sök i titel, arbetsgivare eller ort">
-      <select id="fScore"><option value="0">Alla matchningar</option><option value="40" selected>Minst möjlig matchning</option><option value="70">Bara starka matchningar</option></select>
+      <select id="fScore"><option value="0" selected>Alla matchningar</option><option value="40">Minst möjlig matchning</option><option value="70">Bara starka matchningar</option></select>
       <select id="fShow"><option value="open">Ej avfärdade</option><option value="new">Bara nya</option><option value="unhandled">Ej hanterade</option><option value="soon">Stänger inom 3 dagar</option><option value="all">Alla</option></select>
       <select id="fSort"><option value="score">Bäst matchning först</option><option value="near">Närmast först</option><option value="deadline">Sista ansökningsdag först</option><option value="new">Senast hittade först</option></select>
     </div>
@@ -339,6 +339,7 @@ const STOP=new Set('och att det som en på är av för med till den har de inte 
 const snap=JSON.parse(document.getElementById('snapshot').textContent);
 let DATA=snap; // {generated, sources, jobs}
 let S=load(); let busy=false;
+if(S.filtV!==1){S.maxMin='9999';S.noOsd=false;S.f={score:'0',show:'open',sort:'score',src:''};S.filtV=1;save()} // första gången: utan filter, sedan minns sidan senaste valen
 if(S.homeV!==3){S.home='hem';S.homeV=3;S.maxMin='60';if(S.noOsd==null)S.noOsd=true;S.letters=S.letters||{};S.contact=S.contact||{phone:'',email:''};save()}
 function load(){
   let d=null;try{d=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
@@ -584,7 +585,7 @@ function renderReport(all){
     <div class="stat"><b>${sent}</b><span>skickade ansökningar</span></div>
     <div class="stat"><b>${srcN}</b><span>källor</span></div></div></div>
     <button class="btn btn-line" id="btnCopy">Kopiera dagsrapport</button>`;
-  $('#statSoon').onclick=()=>{$('#fShow').value='soon';$('#fScore').value='40';$('#fSort').value='deadline';LIMIT=60;renderList(view());$('#list').scrollIntoView({behavior:'smooth'})};
+  $('#statSoon').onclick=()=>{$('#fShow').value='soon';$('#fScore').value='40';$('#fSort').value='deadline';LIMIT=60;S.f={score:'40',show:'soon',sort:'deadline',src:$('#fSrc').value};save();renderList(view());$('#list').scrollIntoView({behavior:'smooth'})};
   $('#btnCopy').onclick=()=>{
     const top=(nw.length?nw:strong).slice().sort((a,b)=>(b.score||0)-(a.score||0)).slice(0,8);
     const s=['Daniels jobbtavla, '+fmtDT(S.lastRun),t,'',...top.map(j=>`${j.score} ${j.title} – ${j.employer}, ${j.place}${j.dist!=null?' ('+j.dist+' km'+(j.dmin!=null?', '+fmtMin(j.dmin):'')+')':''} [${j.sources.map(x=>x.name).join(', ')}]\n${j.sources[0].url}`)].join('\n');
@@ -667,7 +668,7 @@ function renderSources(all){
   const only={};all.forEach(j=>{if(j.sources.length===1)only[j.sources[0].name]=(only[j.sources[0].name]||0)+1});
   $('#srcInfo').textContent=`Senaste hämtning från alla källor: ${fmtDT(DATA.generated)}. Samma jobb som finns på flera ställen slås ihop och visar alla källor.`;
   $('#srcTable').innerHTML='<tr><th>Källa</th><th class="n">Jobb</th><th class="n">Bara här</th></tr>'+Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).map(n=>`<tr><td>${esc(n)}</td><td class="n">${cnt[n]}</td><td class="n">${only[n]||0}</td></tr>`).join('');
-  const sel=$('#fSrc'),cur=sel.value;sel.innerHTML='<option value="">Alla källor</option>'+Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).map(n=>`<option${n===cur?' selected':''}>${esc(n)}</option>`).join('');
+  const sel=$('#fSrc'),cur=sel.value||((S.f&&S.f.src)||'');sel.innerHTML='<option value="">Alla källor</option>'+Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).map(n=>`<option${n===cur?' selected':''}>${esc(n)}</option>`).join('');
 }
 function render(){const all=view();renderReport(all);renderSources(all);renderList(all);renderTrack(all);renderKw()}
 
@@ -678,7 +679,8 @@ document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{
   if(b.dataset.tab==='jobs'&&map)setTimeout(()=>map.invalidateSize(),50);
 });
 $('#btnUpdate').onclick=()=>update(false);
-['#fText','#fScore','#fShow','#fSort','#fSrc'].forEach(s=>$(s).addEventListener('input',()=>{LIMIT=60;renderList(view())}));
+['#fText','#fScore','#fShow','#fSort','#fSrc'].forEach(s=>$(s).addEventListener('input',()=>{S.f={score:$('#fScore').value,show:$('#fShow').value,sort:$('#fSort').value,src:$('#fSrc').value};save();LIMIT=60;renderList(view())}));
+const F=S.f||{};if(F.score!=null)$('#fScore').value=F.score;if(F.show)$('#fShow').value=F.show;if(F.sort)$('#fSort').value=F.sort;
 $('#fHome').value=S.home;$('#fRemote').checked=S.remote;$('#fNoOsd').checked=!!S.noOsd;
 function syncQuick(){document.querySelectorAll('.quick button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.min===String(S.maxMin)))}
 syncQuick();
