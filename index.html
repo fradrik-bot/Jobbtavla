@@ -249,10 +249,11 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
         <h3 class="lt-h3">Det de söker, och det du har</h3>
         <div class="tablewrap"><table class="src" id="ltMatch"></table></div>
         <h3 class="lt-h3">Skriv brevet med AI</h3>
-        <p>Knappen öppnar Claude med annonsen och ditt CV ifyllda. Om rutan är tom när Claude öppnas, klistra in med Ctrl+V eller Cmd+V. Klistra sedan in Claudes förslag i brevet nedan och justera.</p>
+        <p>Knappen öppnar din AI-tjänst med annonsen och ditt CV ifyllda. Om rutan är tom när den öppnas, klistra in med Ctrl+V eller Cmd+V. Kopiera sedan förslaget, klistra in det i brevet nedan och justera.</p>
         <div class="row">
-          <button class="btn btn-main" style="background:var(--spruce);color:var(--spruce-ink)" id="btnAi">Skriv brevet med Claude</button>
-          <button class="btn btn-line" id="btnCopyPrompt">Kopiera instruktionen</button>
+          <button class="btn btn-main" style="background:var(--spruce);color:var(--spruce-ink)" data-ai="chatgpt">Skriv brevet med ChatGPT</button>
+          <button class="btn btn-line" data-ai="claude">Skriv med Claude</button>
+          <button class="btn btn-line" id="btnCopyPrompt" title="För Copilot, Gemini eller annan AI">Kopiera instruktionen</button>
           <button class="btn btn-line" id="btnPdf">Exportera PDF</button>
           <button class="btn btn-line" id="btnReset">Börja om från utkastet</button>
         </div>
@@ -503,7 +504,7 @@ Titel: ${j.title}
 Arbetsgivare: ${j.employer}
 Ort: ${j.remote?'Distans':j.place}
 ${j.deadline?'Sista ansökningsdag: '+j.deadline+'\n':''}Annonstext:
-${(j.desc||'(Ingen text, se annonsen: '+j.sources[0].url+')').slice(0,3200)}
+${(j.desc||'(Ingen text, se annonsen: '+j.sources[0].url+')').slice(0,2200)}
 
 CV
 ${CV_TEXT}`;
@@ -732,12 +733,12 @@ $('#ltBody').addEventListener('input',()=>{if(!LT)return;S.letters[LT.id]={text:
 $('#ltBody').addEventListener('paste',e=>{e.preventDefault();const tx=(e.clipboardData||window.clipboardData).getData('text');document.execCommand('insertText',false,tx)});
 ['#ctPhone','#ctEmail'].forEach(s=>$(s).addEventListener('input',()=>{S.contact={phone:$('#ctPhone').value.trim(),email:$('#ctEmail').value.trim()};save();renderContact()}));
 async function copyText(s){try{await navigator.clipboard.writeText(s);return true}catch(e){return false}}
-$('#btnAi').onclick=async()=>{
+document.querySelectorAll('[data-ai]').forEach(b=>b.onclick=async()=>{
   if(!LT)return;const p=aiPrompt(LT);const ok=await copyText(p);
-  const url=p.length<6000?'https://claude.ai/new?q='+encodeURIComponent(p):'https://claude.ai/new';
-  window.open(url,'_blank','noopener');
-  toast(ok?'Instruktionen är kopierad. Klistra in den i Claude om rutan är tom.':'Öppnade Claude. Använd Kopiera instruktionen om rutan är tom.');
-};
+  const svc=b.dataset.ai==='claude'?{name:'Claude',base:'https://claude.ai/new',q:'https://claude.ai/new?q='}:{name:'ChatGPT',base:'https://chatgpt.com/',q:'https://chatgpt.com/?q='};
+  window.open(p.length<6000?svc.q+encodeURIComponent(p):svc.base,'_blank','noopener');
+  toast(ok?`Instruktionen är kopierad. Klistra in den i ${svc.name} om rutan är tom.`:`Öppnade ${svc.name}. Använd Kopiera instruktionen om rutan är tom.`);
+});
 $('#btnCopyPrompt').onclick=async()=>{if(!LT)return;const p=aiPrompt(LT);if(await copyText(p))toast('Instruktionen är kopierad.');else prompt('Kopiera texten:',p)};
 function preparePrint(){
   let pa=document.getElementById('printArea');if(!pa){pa=document.createElement('div');pa.id='printArea';document.body.appendChild(pa)}
