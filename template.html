@@ -73,6 +73,7 @@ nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(-
 .quick .small{margin-right:4px}
 .quick button{border:1px solid var(--line);background:var(--surface);border-radius:20px;padding:.35rem .8rem;cursor:pointer;font-size:.9rem}
 .quick button[aria-pressed="true"]{background:var(--spruce);color:var(--spruce-ink);border-color:var(--spruce)}
+.pub{font-size:.82rem;color:var(--ink-2);margin-top:2px}
 .count{font-size:.9rem;color:var(--ink-2);margin:-4px 0 10px}
 .job{background:var(--surface);border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:76px 1fr;margin-bottom:10px}
 .job.dim{opacity:.55}
@@ -220,7 +221,7 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
       <input type="search" id="fText" placeholder="Sök i titel, arbetsgivare eller ort">
       <select id="fScore"><option value="0" selected>Alla matchningar</option><option value="40">Minst möjlig matchning</option><option value="70">Bara starka matchningar</option></select>
       <select id="fShow"><option value="open">Ej avfärdade</option><option value="new">Bara nya</option><option value="unhandled">Ej hanterade</option><option value="soon">Stänger inom 3 dagar</option><option value="all">Alla</option></select>
-      <select id="fSort"><option value="score">Bäst matchning först</option><option value="near">Närmast först</option><option value="deadline">Sista ansökningsdag först</option><option value="new">Senast hittade först</option></select>
+      <select id="fSort"><option value="score">Bäst matchning först</option><option value="near">Närmast först</option><option value="deadline">Sista ansökningsdag först</option><option value="pub">Senast publicerade först</option><option value="new">Senast hittade först</option></select>
     </div>
     <div class="count" id="count"></div>
     <div id="list"></div>
@@ -353,6 +354,12 @@ const rxEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),3500)}
 const fmtDate=iso=>iso?new Date(iso.slice(0,10)+'T12:00').toLocaleDateString('sv-SE',{day:'numeric',month:'short'}):'';
 const fmtMin=m=>m<60?m+' min':Math.floor(m/60)+' h '+String(m%60).padStart(2,'0')+' min';
+function fmtPub(p){
+  if(!p)return'';const hasT=p.length>10;const d=new Date(hasT?p:p+'T12:00');
+  const t0=new Date();t0.setHours(0,0,0,0);const days=Math.round((new Date(d.getFullYear(),d.getMonth(),d.getDate())-t0)/864e5);
+  const day=days===0?'idag':days===-1?'igår':d.toLocaleDateString('sv-SE',{day:'numeric',month:'short'});
+  return 'Publicerad '+day+(hasT?' kl. '+d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'}):'');
+}
 const fmtDT=iso=>iso?new Date(iso).toLocaleString('sv-SE',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'';
 function daysLeft(iso){if(!iso)return null;const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(iso.slice(0,10)+'T00:00:00')-t)/864e5)}
 function km(a,b){const r=Math.PI/180,dl=(b.lat-a.lat)*r,dn=(b.lon-a.lon)*r;const h=Math.sin(dl/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dn/2)**2;return 6371*2*Math.asin(Math.sqrt(h))}
@@ -378,7 +385,8 @@ function stampSeen(){
   for(const j of DATA.jobs){if(!S.seen[j.id]){S.seen[j.id]=stamp;if(!first)n++}}
   S.lastRun=stamp;S.dataGen=DATA.generated;save();return{first,n};
 }
-const isNew=j=>S.firstRun&&S.lastRun!==S.firstRun&&S.seen[j.id]===S.lastRun;
+const NEW_HOURS=48; // ett jobb räknas som nytt i två dygn efter att det dök upp första gången
+const isNew=j=>{const s=S.seen[j.id];return !!(S.firstRun&&s&&s!==S.firstRun&&Date.now()-Date.parse(s)<NEW_HOURS*36e5)};
 function normPB(h){
   const wa=h.workplace_address||{};const c=wa.coordinates||[];
   let city=wa.city||'';if(!PLACE_NAMES.has(city.toLowerCase()))city=wa.municipality||city;
@@ -388,7 +396,7 @@ function normPB(h){
   return{id:'P'+h.id,title:h.headline||'',employer:(h.employer||{}).name||'',place:city,muni:wa.municipality||'',
     lat:c[1]||null,lon:c[0]||null,occ:(h.occupation_group||{}).label||'',
     type:/Vanlig|Tillsvidare/.test(t)?'Fast':/Säsong|Sommar/.test(t)?'Säsong':/Behov/.test(t)?'Behov':/Vikariat/.test(t)?'Vikariat':/Tidsbeg/.test(t)?'Visstid':t,
-    hours:(h.working_hours_type||{}).label||'',deadline:(h.application_deadline||'').slice(0,10)||null,published:(h.publication_date||'').slice(0,10)||null,
+    hours:(h.working_hours_type||{}).label||'',deadline:(h.application_deadline||'').slice(0,10)||null,published:(h.publication_date||'').slice(0,16)||null,
     desc:((h.description||{}).text||'').slice(0,3500),remote:!!h.remote_work,
     sources:[{name:'Platsbanken',url:'https://arbetsformedlingen.se/platsbanken/annonser/'+h.id}]};
 }
@@ -559,6 +567,7 @@ function filtered(all){
   if(sort==='score')l.sort((a,b)=>((b.score||0)-(a.score||0))||((a.dist??999)-(b.dist??999)));
   if(sort==='near')l.sort((a,b)=>(a.dist??9999)-(b.dist??9999)||((b.score||0)-(a.score||0)));
   if(sort==='deadline')l.sort((a,b)=>dk(a).localeCompare(dk(b)));
+  if(sort==='pub')l.sort((a,b)=>(b.published||'').localeCompare(a.published||''));
   if(sort==='new')l.sort((a,b)=>(S.seen[b.id]||'').localeCompare(S.seen[a.id]||'')||(b.published||'').localeCompare(a.published||''));
   return l;
 }
@@ -573,14 +582,14 @@ function renderReport(all){
   const sent=Object.values(S.status).filter(x=>['sokt','intervju','erbj'].includes(x.s)).length;
   const srcN=new Set(area.flatMap(j=>j.sources.map(s=>s.name))).size;
   const near=area.filter(j=>!j.remote&&j.dist<=30&&j.score>=40).length;const best=area.filter(j=>!j.remote&&j.score>=70&&j.dist!=null).sort((a,b)=>a.dist-b.dist)[0];
-  let t=S.lastRun===S.firstRun?`Första hämtningen är klar. Från och med nästa gång markeras nya jobb med Ny.`:nw.length?`${nw.length} nya jobb i ditt område sedan förra gången, varav ${nwS.length} starka matchningar.`:'Inga nya jobb i ditt område sedan förra gången.';
+  let t=S.lastRun===S.firstRun?`Första hämtningen är klar. Från och med nästa gång markeras nya jobb med Ny.`:nw.length?`${nw.length} nya jobb i ditt område de senaste två dygnen, varav ${nwS.length} starka matchningar.`:'Inga nya jobb i ditt område de senaste två dygnen.';
   t+=` ${near} möjliga eller starka matchningar ligger inom 30 km bilväg från ${HOMES[S.home].name}.`;
   if(best)t+=` Närmaste starka matchning: ${best.title} (${best.employer}), ${best.dist} km${best.dmin!=null?', '+fmtMin(best.dmin):''} bort.`;
   if(S.noOsd){const hid=all.filter(j=>!j.remote&&isOsd(j)&&j.score>=70).length;if(hid)t+=` ${hid} starka matchningar i Östersund är dolda.`}
   if(due.length)t+=` ${due.length} av jobben du har markerat stänger inom tre dagar.`;
   $('#report').innerHTML=`<div><h2>Dagens läge</h2><p>${esc(t)}</p><div class="stats">
     <div class="stat"><b>${area.length}</b><span>jobb i området</span></div>
-    <div class="stat${nw.length?' alert':''}"><b>${nw.length}</b><span>nya</span></div>
+    <div class="stat${nw.length?' alert':''}"><b>${nw.length}</b><span>nya senaste 2 dygnen</span></div>
     <div class="stat"><b>${strong.length}</b><span>starka matchningar</span></div>
     <button class="stat stat-btn${closing.length?' alert':''}" id="statSoon" title="Visa dem i listan"><b>${closing.length}</b><span>bra jobb stänger inom 3 dagar</span></button>
     <div class="stat"><b>${sent}</b><span>skickade ansökningar</span></div>
@@ -606,6 +615,7 @@ function card(j){
     ${isNew(j)?'<span class="tag new">Ny</span>':''}${far}
     ${dl!=null&&dl>=0&&dl<=5?`<span class="tag due">${dl===0?'Sista dag idag':dl===1?'Sista dag imorgon':dl+' dagar kvar'}</span>`:''}</div>
     <div class="meta">${meta}${j.deadline?' – sista dag '+fmtDate(j.deadline):''}</div>
+    ${j.published?`<div class="pub">${fmtPub(j.published)}</div>`:''}
     <div class="srcs">Källa: ${j.sources.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)}</a>`).join('')}</div>
     ${j.hits.length?`<div class="kws">${j.hits.map(h=>`<span class="kw">${esc(h)}</span>`).join('')}</div>`:''}
     ${j.desc?`<details><summary>Läs annonsen</summary><div class="desc">${highlight(j.desc,j.hits)}</div></details>`:''}

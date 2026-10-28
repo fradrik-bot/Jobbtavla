@@ -115,7 +115,7 @@ def platsbanken():
             "type": type_short((h.get("employment_type") or {}).get("label")),
             "hours": (h.get("working_hours_type") or {}).get("label") or "",
             "deadline": (h.get("application_deadline") or "")[:10] or None,
-            "published": (h.get("publication_date") or "")[:10] or None,
+            "published": (h.get("publication_date") or "")[:16] or None,
             "desc": ((h.get("description") or {}).get("text") or "")[:3500 if i < n_local else 1200],
             "remote": i >= n_local or bool(h.get("remote_work")),
             "sources": [{"name": "Platsbanken", "url": "https://arbetsformedlingen.se/platsbanken/annonser/" + h["id"]}],
