@@ -73,6 +73,10 @@ nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(-
 .quick .small{margin-right:4px}
 .quick button{border:1px solid var(--line);background:var(--surface);border-radius:20px;padding:.35rem .8rem;cursor:pointer;font-size:.9rem}
 .quick button[aria-pressed="true"]{background:var(--spruce);color:var(--spruce-ink);border-color:var(--spruce)}
+.sal{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;margin-top:6px;font-size:.85rem}
+.saltag{font-weight:600;background:var(--surface-2);padding:.1rem .5rem;border-radius:5px}
+.salwhy{color:var(--ink-2);font-size:.78rem;flex-basis:100%}
+.salnote{color:var(--ink-2)}
 .pub{font-size:.82rem;color:var(--ink-2);margin-top:2px}
 .count{font-size:.9rem;color:var(--ink-2);margin:-4px 0 10px}
 .job{background:var(--surface);border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:76px 1fr;margin-bottom:10px}
@@ -221,7 +225,7 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
       <input type="search" id="fText" placeholder="Sök i titel, arbetsgivare eller ort">
       <select id="fScore"><option value="0" selected>Alla matchningar</option><option value="40">Minst möjlig matchning</option><option value="70">Bara starka matchningar</option></select>
       <select id="fShow"><option value="open">Ej avfärdade</option><option value="new">Bara nya</option><option value="unhandled">Ej hanterade</option><option value="soon">Stänger inom 3 dagar</option><option value="all">Alla</option></select>
-      <select id="fSort"><option value="score">Bäst matchning först</option><option value="near">Närmast först</option><option value="deadline">Sista ansökningsdag först</option><option value="pub">Senast publicerade först</option><option value="new">Senast hittade först</option></select>
+      <select id="fSort"><option value="score">Bäst matchning först</option><option value="near">Närmast först</option><option value="deadline">Sista ansökningsdag först</option><option value="pub">Senast publicerade först</option><option value="sal">Högst lönegissning först</option><option value="new">Senast hittade först</option></select>
     </div>
     <div class="count" id="count"></div>
     <div id="list"></div>
@@ -354,6 +358,29 @@ const rxEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),3500)}
 const fmtDate=iso=>iso?new Date(iso.slice(0,10)+'T12:00').toLocaleDateString('sv-SE',{day:'numeric',month:'short'}):'';
 const fmtMin=m=>m<60?m+' min':Math.floor(m/60)+' h '+String(m%60).padStart(2,'0')+' min';
+function salary(j){
+  const S0=DATA.salaries||snap.salaries||{};const r=(S0.occ||{})[j.ssyk];if(!r)return null;
+  const [p10,p25,p50,p75,p90,fr]=r;const f=fr??S0.region_factor??0.93;const s=j.score||0;
+  let lo,hi,basis;
+  if(s>=70){lo=p50;hi=p75;basis='stark matchning och lång erfarenhet ger övre halvan av yrkets lönespann'}
+  else if(s>=40){lo=(p25+p50)/2;hi=(p50+p75)/2;basis='delvis matchande erfarenhet ger ett spann runt yrkets median'}
+  else{lo=p10;hi=p50;basis='ny i yrket ger nedre halvan av lönespannet'}
+  const rd=x=>Math.round(x*f/500)*500;
+  return{lo:rd(lo),hi:rd(hi),med:rd(p50),f,basis,guess:!!j.ssyk_guess,occ:j.occ||''};
+}
+const kr=x=>x.toLocaleString('sv-SE')+' kr';
+function salaryLine(j){
+  const e=salary(j);const parts=[];
+  if(e){
+    const reg=Math.round((e.f-1)*100);
+    const why=`${e.occ?e.occ+', ':''}SCB 2025, lönenivån i Jämtland/Västernorrland ${reg>=0?'+':'−'}${Math.abs(reg)} % mot riket; ${e.basis}${e.guess?'. Yrket är gissat utifrån titeln':''}.`;
+    parts.push(`<span class="saltag" title="${esc(why)}">Lönegissning ${e.lo.toLocaleString('sv-SE')}–${kr(e.hi)}/mån</span><span class="salwhy">${esc(why)}</span>`);
+  }
+  if(/rörlig|provision|ackord/i.test(j.saltype||''))parts.push('<span class="salnote">Rörlig lön eller provision enligt annonsen</span>');
+  if(j.saldesc)parts.push(`<span class="salnote">Annonsen: ${esc(j.saldesc.slice(0,120))}</span>`);
+  if(e&&/deltid/i.test(j.hours||''))parts.push('<span class="salnote">Omräknat till heltid</span>');
+  return parts.length?`<div class="sal">${parts.join('')}</div>`:'';
+}
 function fmtPub(p){
   if(!p)return'';const hasT=p.length>10;const d=new Date(hasT?p:p+'T12:00');
   const t0=new Date();t0.setHours(0,0,0,0);const days=Math.round((new Date(d.getFullYear(),d.getMonth(),d.getDate())-t0)/864e5);
@@ -398,7 +425,8 @@ function normPB(h){
     type:/Vanlig|Tillsvidare/.test(t)?'Fast':/Säsong|Sommar/.test(t)?'Säsong':/Behov/.test(t)?'Behov':/Vikariat/.test(t)?'Vikariat':/Tidsbeg/.test(t)?'Visstid':t,
     hours:(h.working_hours_type||{}).label||'',deadline:(h.application_deadline||'').slice(0,10)||null,published:(h.publication_date||'').slice(0,16)||null,
     desc:((h.description||{}).text||'').slice(0,3500),remote:!!h.remote_work,
-    sources:[{name:'Platsbanken',url:'https://arbetsformedlingen.se/platsbanken/annonser/'+h.id}]};
+    sources:[{name:'Platsbanken',url:'https://arbetsformedlingen.se/platsbanken/annonser/'+h.id}],
+    ssyk:(h.occupation_group||{}).legacy_ams_taxonomy_id||null,saltype:(h.salary_type||{}).label||'',saldesc:(h.salary_description||'').slice(0,200)};
 }
 async function fillDrive(){
   const h=HOMES.hem,miss=new Map();
@@ -440,7 +468,7 @@ async function update(auto){
         if(dup){if(!dup.sources.some(s=>s.name==='Platsbanken'))dup.sources.unshift(j.sources[0]);continue}
         keep.push(j);
       }
-      DATA={...DATA,jobs:keep,sources:{...DATA.sources,Platsbanken:live.length+' (live)'}};
+      DATA={...DATA,salaries:DATA.salaries||snap.salaries,jobs:keep,sources:{...DATA.sources,Platsbanken:live.length+' (live)'}};
     }catch(e){msg.push('Platsbanken svarade inte, visar senast hämtade.')}
     await fillDrive();
     const r=stampSeen();rxc={};render();
@@ -522,7 +550,7 @@ function openLetter(id){
   const j=view().find(x=>x.id===id);if(!j)return;LT=j;
   $('#ltEmpty').hidden=true;$('#ltWrap').hidden=false;
   $('#ltTitle').textContent=j.title;
-  $('#ltMeta').textContent=[j.employer,j.remote?'Distans':j.place,j.dist!=null&&!j.remote?(j.dist+' km'+(j.dmin!=null?', '+fmtMin(j.dmin):'')+' hemifrån'):'',j.deadline?'sista dag '+fmtDate(j.deadline):''].filter(Boolean).join(', ');
+  $('#ltMeta').textContent=[j.employer,j.remote?'Distans':j.place,j.dist!=null&&!j.remote?(j.dist+' km'+(j.dmin!=null?', '+fmtMin(j.dmin):'')+' hemifrån'):'',j.deadline?'sista dag '+fmtDate(j.deadline):'',(()=>{const e=salary(j);return e?'lönegissning '+e.lo.toLocaleString('sv-SE')+'–'+kr(e.hi)+'/mån':''})()].filter(Boolean).join(', ');
   const reqs=requirements(j.desc);
   $('#ltMatch').innerHTML=reqs.length?'<tr><th>Annonsen</th><th>Från CV:t</th></tr>'+reqs.map(r=>{const e=bestEvidence(r);return `<tr><td>${esc(r)}</td><td>${e?esc(e.have):'<span class="small">Inget tydligt i CV:t, ta upp i intervjun</span>'}</td></tr>`}).join(''):'<tr><td class="small">Annonsen har ingen text att analysera. Öppna annonsen och läs kraven där.</td></tr>';
   const d=new Date().toLocaleDateString('sv-SE',{day:'numeric',month:'long',year:'numeric'});
@@ -567,6 +595,7 @@ function filtered(all){
   if(sort==='score')l.sort((a,b)=>((b.score||0)-(a.score||0))||((a.dist??999)-(b.dist??999)));
   if(sort==='near')l.sort((a,b)=>(a.dist??9999)-(b.dist??9999)||((b.score||0)-(a.score||0)));
   if(sort==='deadline')l.sort((a,b)=>dk(a).localeCompare(dk(b)));
+  if(sort==='sal')l.sort((a,b)=>((salary(b)||{}).hi||0)-((salary(a)||{}).hi||0));
   if(sort==='pub')l.sort((a,b)=>(b.published||'').localeCompare(a.published||''));
   if(sort==='new')l.sort((a,b)=>(S.seen[b.id]||'').localeCompare(S.seen[a.id]||'')||(b.published||'').localeCompare(a.published||''));
   return l;
@@ -616,6 +645,7 @@ function card(j){
     ${dl!=null&&dl>=0&&dl<=5?`<span class="tag due">${dl===0?'Sista dag idag':dl===1?'Sista dag imorgon':dl+' dagar kvar'}</span>`:''}</div>
     <div class="meta">${meta}${j.deadline?' – sista dag '+fmtDate(j.deadline):''}</div>
     ${j.published?`<div class="pub">${fmtPub(j.published)}</div>`:''}
+    ${salaryLine(j)}
     <div class="srcs">Källa: ${j.sources.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)}</a>`).join('')}</div>
     ${j.hits.length?`<div class="kws">${j.hits.map(h=>`<span class="kw">${esc(h)}</span>`).join('')}</div>`:''}
     ${j.desc?`<details><summary>Läs annonsen</summary><div class="desc">${highlight(j.desc,j.hits)}</div></details>`:''}
@@ -731,8 +761,8 @@ $('#btnAnalyze').onclick=()=>{
 };
 function download(name,content,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 $('#btnCsv').onclick=()=>{
-  const lab=Object.fromEntries(STATUSES);const rows=[['Matchning','Status','Titel','Arbetsgivare','Ort','Km bilväg','Körtid min','Anställning','Sista dag','Källor','Länk','Anteckning']];
-  view().filter(j=>inArea(j)).sort((a,b)=>(b.score||0)-(a.score||0)).forEach(j=>rows.push([j.score??'',lab[st(j.id)]||'',j.title,j.employer,j.remote?'Distans':j.place,j.dist??'',j.dmin??'',j.type,j.deadline||'',j.sources.map(s=>s.name).join(', '),j.sources[0].url,(S.status[j.id]&&S.status[j.id].note)||'']));
+  const lab=Object.fromEntries(STATUSES);const rows=[['Matchning','Status','Titel','Arbetsgivare','Ort','Km bilväg','Körtid min','Lönegissning från','Lönegissning till','Anställning','Sista dag','Källor','Länk','Anteckning']];
+  view().filter(j=>inArea(j)).sort((a,b)=>(b.score||0)-(a.score||0)).forEach(j=>rows.push([j.score??'',lab[st(j.id)]||'',j.title,j.employer,j.remote?'Distans':j.place,j.dist??'',j.dmin??'',(salary(j)||{}).lo??'',(salary(j)||{}).hi??'',j.type,j.deadline||'',j.sources.map(s=>s.name).join(', '),j.sources[0].url,(S.status[j.id]&&S.status[j.id].note)||'']));
   download('daniel-jobb-'+new Date().toISOString().slice(0,10)+'.csv','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\r\n'),'text/csv;charset=utf-8');
 };
 $('#btnBackup').onclick=()=>download('daniel-jobb-backup-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(S),'application/json');

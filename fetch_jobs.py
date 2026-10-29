@@ -119,6 +119,9 @@ def platsbanken():
             "desc": ((h.get("description") or {}).get("text") or "")[:3500 if i < n_local else 1200],
             "remote": i >= n_local or bool(h.get("remote_work")),
             "sources": [{"name": "Platsbanken", "url": "https://arbetsformedlingen.se/platsbanken/annonser/" + h["id"]}],
+            "ssyk": (h.get("occupation_group") or {}).get("legacy_ams_taxonomy_id"),
+            "saltype": (h.get("salary_type") or {}).get("label") or "",
+            "saldesc": (h.get("salary_description") or "")[:200],
         })
     return jobs
 
@@ -206,6 +209,70 @@ def sv_date(s):
     if not m or m.group(2) not in SV_MONTHS: return None
     return f"{m.group(3)}-{SV_MONTHS[m.group(2)]:02d}-{int(m.group(1)):02d}"
 
+TITLE_SSYK = [  # gissat yrke för annonser utan yrkeskod (LinkedIn, SkiStar m.fl.)
+    (r"key account|account manager|säljare|sales|försäljning|affärsutveckl|business developer", "3322"),
+    (r"butik|store|retail", "5223"),
+    (r"elektriker|electrician", "7411"),
+    (r"vvs|rörmok", "7125"),
+    (r"mekaniker|mechanic", "7231"),
+    (r"kock|chef de|kallskänk", "5120"),
+    (r"servitör|servis|bartender|hovmästare", "5131"),
+    (r"kundtjänst|customer service|support", "4222"),
+    (r"ingenjör|engineer", "2149"),
+    (r"marknad|marketing", "2431"),
+    (r"lastbil|chaufför|driver", "8332"),
+    (r"mäklare", "3339"),
+]
+def guess_ssyk(title):
+    t = (title or "").lower()
+    for rx, code in TITLE_SSYK:
+        if re.search(rx, t): return code
+    return None
+
+SCB = "https://statistikdatabasen.scb.se/api/v2/tables/"
+def scb(tab, vc):
+    q = "&".join(f"valueCodes[{k}]={urllib.parse.quote(v, safe='*,')}" for k, v in vc.items())
+    for i in range(4):
+        try:
+            d = json.loads(get(f"{SCB}{tab}/data?lang=sv&outputFormat=json-stat2&{q}"))
+            if "value" in d: return d
+        except Exception:
+            pass
+        time.sleep(6 + i * 6)
+    return None
+
+def by_code(d, dim="Yrke2012"):
+    idx = d["dimension"][dim]["category"]["index"]
+    return sorted(idx, key=lambda k: idx[k]) if isinstance(idx, dict) else idx
+
+def salaries(codes):
+    """SCB lönestrukturstatistik: percentiler per yrke (riket) och nivå i Mellersta Norrland."""
+    out = {"source": "SCB lönestrukturstatistik", "occ": {}}
+    a = scb("TAB5932", {"Sektor": "0", "Kon": "1+2", "Tid": "2025",
+                        "ContentsCode": "000007CF,000007CG,000007CE,000007CH,000007CI", "Yrke2012": "*"})
+    if not a: return out
+    occ = by_code(a); n = len(occ)
+    cont = by_code(a, "ContentsCode")  # ordning: P10, P25, median, P75, P90 enligt begäran
+    order = {c: i for i, c in enumerate(cont)}
+    want = ["000007CF", "000007CG", "000007CE", "000007CH", "000007CI"]
+    # json-stat: Sektor, Yrke, Kon, Contents, Tid
+    for i, code in enumerate(occ):
+        vals = [a["value"][i * len(cont) + order[w]] for w in want]
+        if all(v for v in vals): out["occ"][code] = vals
+    # regional nivå: Mellersta Norrland jämfört med riket, per yrke där det finns
+    def level(region):
+        time.sleep(10)  # SCB begränsar antalet anrop
+        d = scb("TAB5696", {"Region": region, "Sektor": "0", "Kon": "1+2", "Tid": "2025",
+                            "ContentsCode": "000007AS", "Yrke2012": "*"})
+        return dict(zip(by_code(d), d["value"])) if d else {}
+    se, mn = level("SE"), level("SE32")
+    out["region_factor"] = round((mn.get("0000") or 0.93) / (se.get("0000") or 1), 3) if se.get("0000") and mn.get("0000") else 0.93
+    for c in codes:
+        if c in out["occ"] and se.get(c) and mn.get(c):
+            out["occ"][c] = out["occ"][c] + [round(max(0.85, min(1.05, mn[c] / se[c])), 3)]
+    out["occ"] = {c: v for c, v in out["occ"].items() if c in codes}
+    return out
+
 def norm(s):
     s = (s or "").lower()
     s = re.sub(r"\b(ab|aktiebolag|sverige|sweden|ekonomisk förening)\b", "", s)
@@ -252,8 +319,14 @@ def main():
             j["km"] = None
         jobs.append(j)
     add_drive(jobs)
+    for j in jobs:
+        if not j.get("ssyk"): j["ssyk"] = guess_ssyk(j["title"]); j["ssyk_guess"] = bool(j["ssyk"])
+    try:
+        sal = salaries({j["ssyk"] for j in jobs if j.get("ssyk")})
+    except Exception as e:
+        print("SCB fel:", e, file=sys.stderr); sal = {"occ": {}}
     out = {"generated": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
-           "home": {"name": "Hemma i Bonäshamn", "lat": HOME[0], "lon": HOME[1]}, "sources": report, "jobs": jobs}
+           "home": {"name": "Hemma i Bonäshamn", "lat": HOME[0], "lon": HOME[1]}, "sources": report, "salaries": sal, "jobs": jobs}
     with open("jobs.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False)
     print(f"{len(jobs)} jobb skrivna till jobs.json", file=sys.stderr)
