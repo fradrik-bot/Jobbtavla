@@ -2,8 +2,9 @@
 <html lang="sv">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Daniels jobbtavla</title>
+<title>__TITLE__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Archivo:wght@800&family=IBM+Plex+Mono&family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -26,6 +27,7 @@
   }
 }
 *,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Familjen Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.5}
 a{color:var(--sky)}
@@ -96,6 +98,11 @@ nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(-
 .tag.new{background:var(--signal);color:#fff}
 .tag.due{color:var(--signal);background:transparent;border:1px solid currentColor}
 .tag.dist{background:var(--lichen);color:var(--ink)}
+.tag.kind-uppdrag{background:#F3E2C7;color:#6B4A12}
+.tag.kind-konsult{background:#E4E0F2;color:#3F3570}
+.tag.kind-rekryterare{background:var(--surface-2);color:var(--ink-2)}
+.tag.exec{background:var(--ink);color:var(--surface)}
+@media (prefers-color-scheme:dark){.tag.kind-uppdrag{background:#4A3A1E;color:#F3D9A8}.tag.kind-konsult{background:#35305A;color:#D9D3F5}}
 .tag.gone{background:var(--ink-2);color:var(--surface)}
 .srcs{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:6px;font-size:.82rem;color:var(--ink-2)}
 .srcs a{font-weight:600;text-decoration:none;padding:.05rem .45rem;border-radius:5px;background:var(--lichen);color:var(--ink)}
@@ -155,6 +162,17 @@ table.src td.n{font-variant-numeric:tabular-nums;text-align:right}
 .lt-body:focus{box-shadow:0 0 0 2px #9DBFDB;border-radius:2px}
 .lt-foot{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;color:#6A7178;border-top:1px solid #D8DCDF;margin-top:36px;padding-top:10px}
 @media (max-width:700px){.sheet{padding:28px 22px}.lt-name{font-size:40px}.lt-row{grid-template-columns:1fr}.lt-track{display:none}}
+.sheet.v2{background:#F5F3EE;color:#141414}
+.v2 .v2-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+.v2 .lt-name{font-size:60px;color:#141414}
+.v2-love{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;color:#3A3A3A;margin-top:14px}
+.v2-love .h{color:#E2542B}
+.v2-role{font-size:17px;margin-top:6px;color:#141414}
+.v2-contact{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12px;text-align:right;line-height:1.75;color:#333}
+.v2-rule{height:3px;background:#141414;margin:16px 0 22px}
+.v2 .lt-label .v2-num{color:#E2542B}
+.v2 .lt-banner{background:none;color:#6B6B6B;padding:0;margin:0 0 16px;font-size:14px}
+.v2 .lt-banner b{color:#141414;font-family:"Public Sans",system-ui,sans-serif;font-weight:700;font-size:18px}
 #printArea{display:none}
 @media print{
   @page{size:A4;margin:0}
@@ -180,8 +198,8 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
 <header class="top">
   <div class="wrap">
     <div>
-      <h1>Daniels jobbtavla</h1>
-      <p>Lediga jobb runt nya hemmet i Bonäshamn, Järpen och Åre från Platsbanken, LinkedIn, SkiStar och fler jobbsajter, sorterade efter hur väl de passar din bakgrund.</p>
+      <h1>__H1__</h1>
+      <p>__INTRO__</p>
     </div>
     <div class="update-box">
       <button class="btn btn-main" id="btnUpdate">Hämta nya jobb</button>
@@ -203,15 +221,15 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
   <section class="panel on" id="p-jobs">
     <div class="report" id="report"></div>
     <div class="filters">
-      <label>Avstånd från <select id="fHome"><option value="hem">Hemma, Bonäshamn 665</option><option value="jarpen">Järpen centrum</option><option value="are">Åre</option></select></label>
+      <label>Avstånd från <select id="fHome">__HOME_OPTS__</select></label>
       <div class="quick" role="group" aria-label="Max restid">
-        <span class="small">Max restid</span>
-        <button data-min="15">15 min</button><button data-min="30">30 min</button><button data-min="45">45 min</button><button data-min="60">1 timme</button><button data-min="9999">Alla</button>
+        <span class="small">__QUICK_LABEL__</span>
+        __QUICK__
       </div>
-      <label><input type="checkbox" id="fNoOsd"> Dölj Östersund</label>
+      <label __HIDEAREA_STYLE__><input type="checkbox" id="fNoOsd"> __HIDEAREA_LABEL__</label>
       <div class="quick" id="qSal" role="group" aria-label="Minsta lön">
         <span class="small">Lön minst</span>
-        <button data-sal="0">Alla</button><button data-sal="30000">30 tkr</button><button data-sal="35000">35 tkr</button><button data-sal="40000">40 tkr</button><button data-sal="45000">45 tkr</button><button data-sal="50000">50 tkr</button>
+        __SALBTNS__
       </div>
       <label><input type="checkbox" id="fRemote"> Distansjobb</label>
       <select id="fSrc"><option value="">Alla källor</option></select>
@@ -229,6 +247,8 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
       <input type="search" id="fText" placeholder="Sök i titel, arbetsgivare eller ort">
       <select id="fScore"><option value="0" selected>Alla matchningar</option><option value="40">Minst möjlig matchning</option><option value="70">Bara starka matchningar</option></select>
       <select id="fShow"><option value="open">Ej avfärdade</option><option value="new">Bara nya</option><option value="unhandled">Ej hanterade</option><option value="soon">Stänger inom 3 dagar</option><option value="all">Alla</option></select>
+      <select id="fKind" aria-label="Typ av jobb"><option value="">Alla jobbtyper</option><option value="anst">Anställning</option><option value="konsultalla">Konsult och uppdrag</option><option value="uppdrag">Bara konsultuppdrag och interim</option></select>
+      <select id="fLevel" aria-label="Nivå" __LEVEL_STYLE__><option value="">Alla nivåer</option><option value="head">Head of och uppåt</option><option value="exec">Direktör och C-nivå</option></select>
       <select id="fSort"><option value="score">Bäst matchning först</option><option value="near">Närmast först</option><option value="deadline">Sista ansökningsdag först</option><option value="pub">Senast publicerade först</option><option value="sal">Högst lönegissning först</option><option value="new">Senast hittade först</option></select>
     </div>
     <div class="count" id="count"></div>
@@ -268,6 +288,8 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
         </div>
         <details style="margin-top:12px"><summary>Dina kontaktuppgifter i brevet</summary>
           <div class="row" style="margin-top:8px">
+            <input class="inp" id="ctName" placeholder="Namn" __NAMEFIELD_STYLE__>
+            <input class="inp" id="ctCity" placeholder="Ort" __NAMEFIELD_STYLE__>
             <input class="inp" id="ctPhone" placeholder="Telefon">
             <input class="inp" id="ctEmail" placeholder="E-post">
           </div>
@@ -275,22 +297,7 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
         </details>
       </div>
       <p class="small" style="margin:0 0 8px">Brevet går att redigera direkt. Ändringar sparas automatiskt för det här jobbet.</p>
-      <div class="sheet" id="sheet">
-        <div class="lt-head">
-          <div>
-            <div class="lt-name">Daniel<br>Jansson</div>
-            <div class="lt-tag">Säljare som kan tekniken bakom produkten. <span>Tränar svenska landslaget på fritiden.</span></div>
-            <div class="lt-meta" id="ltContact"></div>
-          </div>
-          <svg class="lt-track" viewBox="0 0 200 100" aria-hidden="true"><rect x="4" y="10" width="192" height="80" rx="40" fill="none" stroke="#9DBFDB" stroke-width="1.5"/><rect x="26" y="26" width="148" height="48" rx="24" fill="none" stroke="#C9DCEB" stroke-width="1.2"/><path d="M110 90 Q170 90 190 60" fill="none" stroke="#1767A6" stroke-width="2.4"/><circle cx="110" cy="90" r="3.5" fill="#1767A6"/></svg>
-        </div>
-        <div class="lt-banner" id="ltBanner"></div>
-        <div class="lt-row">
-          <div class="lt-label">Personligt<br>brev</div>
-          <div class="lt-body" id="ltBody" contenteditable="true" spellcheck="true"></div>
-        </div>
-        <div class="lt-foot"><span>Daniel Jansson · Personligt brev</span><span id="ltDate"></span></div>
-      </div>
+__SHEET__
     </div>
   </section>
 
@@ -307,7 +314,7 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
     </div>
     <div class="card">
       <h2>Räkna om från ett nytt CV</h2>
-      <p>Klistra in CV-texten så föreslås nya sökord. Texten stannar i din webbläsare.</p>
+      <p>Klistra in CV-texten så föreslås nya sökord. Texten stannar i din webbläsare och används också när AI:n skriver personliga brev.</p>
       <textarea class="cv" id="cvText" placeholder="Klistra in CV-texten här"></textarea>
       <div class="row" style="margin-top:10px"><button class="btn" id="btnAnalyze">Föreslå sökord från texten</button></div>
     </div>
@@ -319,37 +326,33 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
       <p id="srcInfo"></p>
       <div class="tablewrap"><table class="src" id="srcTable"></table></div>
     </div>
-    <div class="card">
-      <h2>Källor som inte går att läsa automatiskt</h2>
-      <p>Indeed, Monster, Jooble och Careerjet stänger ute automatisk hämtning. Deras annonser i Jämtland är till största delen kopior av Platsbanken och LinkedIn, som redan finns med. Facebook-grupper kräver inloggning.</p>
-      <div class="row">
-        <a class="btn btn-line" href="https://se.indeed.com/jobs?q=&l=J%C3%A4rpen&radius=50" target="_blank" rel="noopener">Indeed runt Järpen</a>
-        <a class="btn btn-line" href="https://www.google.com/search?q=facebook+grupp+jobb+i+%C3%85re" target="_blank" rel="noopener">Facebook-grupper för jobb i Åre</a>
-      </div>
-    </div>
+__MANUAL__
   </section>
 </main>
-<footer class="wrap">Data från Arbetsförmedlingens öppna API:er, LinkedIns publika jobbsök och SkiStars karriärsida. Kartdata © Esri och OpenStreetMap-bidragsgivare. Dina markeringar sparas lokalt i den här webbläsaren.</footer>
+<footer class="wrap">Data från Arbetsförmedlingens öppna API:er, LinkedIns publika jobbsök med flera. Kartdata © Esri och OpenStreetMap-bidragsgivare. Dina markeringar sparas lokalt i den här webbläsaren.</footer>
 <div class="toast" id="toast" role="status"></div>
 
 <script type="application/json" id="snapshot">__SNAPSHOT__</script>
+<script type="application/json" id="profile">__PROFILE__</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
 <script>
 (function(){
 "use strict";
-const KEY='daniel-jobbtavla-v2';
-const HOMES={hem:{name:'hemma i Bonäshamn',short:'Hemma',lat:63.412945,lon:13.366713},jarpen:{name:'Järpen centrum',short:'Järpen',lat:63.348,lon:13.470},are:{name:'Åre',short:'Åre',lat:63.399,lon:13.081}};
+const P=JSON.parse(document.getElementById('profile').textContent);
+const KEY=P.key;
+const HOMES=P.homes;
 const PLACE_NAMES=new Set(['åre','järpen','duved','undersåker','storlien','mörsil','hallen','kall','mattmar','vålådalen','bydalen','östersund','frösön','krokom','brunflo','nälden','föllinge','trångsviken','ås','lit','bräcke','sveg','funäsdalen','vemdalen','hede','strömsund','hammerdal','hammarstrand','svenstavik','tännäs','lofsdalen','gäddede']);
 const STATUSES=[['','Ej hanterad'],['int','Intressant'],['ska','Ska söka'],['sokt','Sökt'],['intervju','Intervju'],['erbj','Erbjudande'],['avslag','Avslag'],['nej','Ej aktuell']];
-const DEFAULT_KW=[['teknisk försäljning',2],['säljare',2],['försäljning',2],['b2b',2],['affärsutveckling',2],['kundansvarig',2],['key account',2],['account manager',2],['distriktsansvarig',2],['kundrelationer',1],['offert',1],['förhandling',1],['nykund',1],['innesälj',1],['fältsälj',1],['grossist',1],['installation',1],['offentlig sektor',1],['elektronik',1],['industri',1],['tränare',1],['ledarskap',1],['butikssäljare',1]].map(([t,w])=>({t,w,custom:true}));
-const DEFAULT_AV=['legitimerad','sjuksköterska','läkare','förskollärare','lärare','socionom','psykolog','undersköterska','kock','tandläkare'];
+const DEFAULT_KW=P.kw.map(([t,w])=>({t,w,custom:true}));
+const DEFAULT_AV=P.avoid;
 const STOP=new Set('och att det som en på är av för med till den har de inte om ett men var jag sig från vi så kan man när år hon nu också efter där vid alla under eller detta dessa vara mycket mig bara hade mot sedan andra ska skulle sin sitt sina dem deras vad hur vilken vilket vilka även samt genom inom mellan utan över hos hela inga ingen något några många mer mest både bland just upp ut in ner jobb arbete arbetat arbetar erfarenhet ansvar uppgifter tjänst företag period tidigare personlig egenskaper referenser kontakt telefon adress språk svenska engelska körkort utbildning examen goda god bra stor olika söker mitt mina min the and for with from that this have work experience januari februari mars april juni juli augusti september oktober november december sverige idag'.split(' '));
 
 const snap=JSON.parse(document.getElementById('snapshot').textContent);
 let DATA=snap; // {generated, sources, jobs}
 let S=load(); let busy=false;
 if(S.filtV!==1){S.maxMin='9999';S.noOsd=false;S.f={score:'0',show:'open',sort:'score',src:''};S.filtV=1;save()} // första gången: utan filter, sedan minns sidan senaste valen
+if(P.defaultMax&&S.maxV!==P.maxVersion){S.maxMin=String(P.defaultMax);S.maxV=P.maxVersion;save()}
 if(S.homeV!==3){S.home='hem';S.homeV=3;S.maxMin='60';if(S.noOsd==null)S.noOsd=true;S.letters=S.letters||{};S.contact=S.contact||{phone:'',email:''};save()}
 function load(){
   let d=null;try{d=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
@@ -377,7 +380,7 @@ function salaryLine(j){
   const e=salary(j);const parts=[];
   if(e){
     const reg=Math.round((e.f-1)*100);
-    const why=`${e.occ?e.occ+', ':''}SCB 2025, lönenivån i Jämtland/Västernorrland ${reg>=0?'+':'−'}${Math.abs(reg)} % mot riket; ${e.basis}${e.guess?'. Yrket är gissat utifrån titeln':''}.`;
+    const why=`${e.occ?e.occ+', ':''}SCB 2025, lönenivån i ${P.regionLabel} ${reg>=0?'+':'−'}${Math.abs(reg)} % mot riket; ${e.basis}${e.guess?'. Yrket är gissat utifrån titeln':''}.`;
     parts.push(`<span class="saltag" title="${esc(why)}">Lönegissning ${e.lo.toLocaleString('sv-SE')}–${kr(e.hi)}/mån</span><span class="salwhy">${esc(why)}</span>`);
   }
   if(/rörlig|provision|ackord/i.test(j.saltype||''))parts.push('<span class="salnote">Rörlig lön eller provision enligt annonsen</span>');
@@ -404,9 +407,29 @@ function scoreJob(j){
   const head=(j.title+' '+j.occ).toLowerCase(),all=txt(j);let p=0;const hits=[];
   for(const k of act){if(rx(k.t).test(head)){p+=k.w*2;hits.push(k.t)}else if(rx(k.t).test(all)){p+=k.w;hits.push(k.t)}}
   let sc=Math.round(100*(1-Math.exp(-p/4)));
+  if(P.execBoost&&RX_EXEC.test(j.title))sc=Math.min(100,sc+P.execBoost);
   if(S.avoid.some(w=>rx(w).test(j.title.toLowerCase())))sc=Math.round(sc*.3);
+  const tt=j.title+' '+(j.occ||'');
+  if(DOMAIN_RX&&!DOMAIN_RX.test(tt))sc=Math.min(sc,30);
+  else if(SENIOR_RX&&!SENIOR_RX.test(j.title))sc=Math.min(sc,P.capNonSenior||55);
   return{score:sc,hits};
 }
+const RX_BROKER=/(ework|emagine|keyman|cinode|brainville|kvadrat|upgraded people|nordic interim|interimslösning|interim management|toptal|comatch|freelance|frilans)/i;
+const RX_ASSIGN=/(konsultuppdrag|interimsuppdrag|\binterim\b|uppdragsperiod|uppdragets (längd|omfattning|start)|uppdragslängd|frilans|freelance|ramavtal|avrop|assignment (length|period|duration)|contract (length|duration|role|position)|\bcontractor\b|option (to|of) extension|möjlighet till förlängning)/i;
+const RX_CONSULTANCY=/(konsult|consult|columbus|knowit|sigma|nexer|capgemini|accenture|deloitte|pwc|kpmg|\bey\b|ernst|\bcgi\b|tietoevry|infosys|\bhcl\b|happy group|veritaz|a society|netlight|avanade|crayon|precio|xenit|random forest|curamando|bearingpoint|mckinsey|\bbcg\b|\bbain\b|implement consulting|sopra|\bhiq\b|redpill|solita|devoteam|cybercom|softronic|edza)/i;
+const RX_RECRUITER=/(academic work|edge of talent|dfind|wise (group|professionals)|poolia|adecco|manpower|randstad|lernia|experis|hays|michael page|robert half|novare|mercuri|executive search|headhunt|level recruitment|\btng\b|bravura|ofelia|incluso|stardust|amendo|rekrytering|recruitment|bemanning|clockwork|perido|qrios)/i;
+const RX_EXEC=/(director|direktör|chief|\bc[a-z]{1,2}o\b|\bvp\b|vice president|ledningsgrupp|executive|managing director|\bvd\b|verkställande)/i;
+const RX_HEADUP=/(head of|\bhead\b|director|direktör|chief|\bc[a-z]{1,2}o\b|\bvp\b|vice president|ledningsgrupp|executive|\bvd\b)/i;
+const kindCache=new Map();
+function kind(j){
+  if(kindCache.has(j.id))return kindCache.get(j.id);
+  const t=j.title||'',all=t+' '+(j.desc||'').slice(0,3000),emp=j.employer||'';let k='anst';
+  if(RX_BROKER.test(emp)||RX_ASSIGN.test(t)||(RX_ASSIGN.test(all)&&!/tillsvidare|permanent position|fast anställning/i.test(all)))k='uppdrag';
+  else if(/konsult|consultant/i.test(t)||(RX_CONSULTANCY.test(emp)&&!RX_RECRUITER.test(emp)))k='konsult';
+  else if(RX_RECRUITER.test(emp))k=(j.type==='Behov'||/bemanning|uthyrd/i.test(all))?'konsult':'rekryterare';
+  kindCache.set(j.id,k);return k;
+}
+const KIND_LABEL={uppdrag:'Konsultuppdrag eller interim',konsult:'Konsultroll',rekryterare:'Via rekryterare'};
 const tier=s=>s==null?['t-weak','–','#9AA7AC']:s>=70?['t-strong','Stark','#1E6B4F']:s>=40?['t-maybe','Möjlig','#2F5F92']:['t-weak','Svag','#9AA7AC'];
 
 /* data refresh */
@@ -452,17 +475,21 @@ async function update(auto){
   try{
     // 1) senaste dagliga körningen (alla källor), om sidan ligger på en webbplats
     if(location.protocol.startsWith('http')){
-      try{const r=await fetch('jobs.json?'+Date.now());if(r.ok){const d=await r.json();if(!DATA.generated||d.generated>DATA.generated)DATA=d}}catch(e){}
+      try{const r=await fetch(P.dataFile+'?'+Date.now());if(r.ok){const d=await r.json();if(!DATA.generated||d.generated>DATA.generated)DATA=d}}catch(e){}
     }
     // 2) Platsbanken direkt, så att dagens nya annonser alltid kommer med
     try{
-      const h=HOMES.hem;let off=0,total=1,live=[];
-      while(off<Math.min(total,2000)){
-        const r=await fetch(`https://jobsearch.api.jobtechdev.se/search?position=${h.lat},${h.lon}&position.radius=160&limit=100&offset=${off}`,{headers:{accept:'application/json'}});
-        if(!r.ok)throw 0;const d=await r.json();total=d.total.value;live=live.concat(d.hits.map(normPB));off+=100;
+      let live=[];const got=new Set();
+      for(const q of P.live){
+        let off=0,total=1;
+        while(off<Math.min(total,P.liveMax||2000)){
+          const r=await fetch(`https://jobsearch.api.jobtechdev.se/search?${q}&limit=100&offset=${off}`,{headers:{accept:'application/json'}});
+          if(!r.ok)throw 0;const d=await r.json();total=d.total.value;
+          d.hits.forEach(h=>{if(!got.has(h.id)){got.add(h.id);live.push(normPB(h))}});off+=100;
+        }
       }
       const liveIds=new Set(live.map(j=>j.id));
-      const keep=DATA.jobs.filter(j=>!(j.id.startsWith('P')&&!j.remote&&!liveIds.has(j.id)));
+      const keep=P.liveComplete?DATA.jobs.filter(j=>!(j.id.startsWith('P')&&!j.remote&&!liveIds.has(j.id))):DATA.jobs.slice();
       const have=new Map(keep.map(j=>[j.id,j]));
       const key=j=>(j.title.toLowerCase().replace(/[^a-zåäö0-9]/g,'').slice(0,60)+'|'+j.employer.toLowerCase().replace(/[^a-zåäö0-9]/g,'').slice(0,6));
       const byKey=new Map(keep.map(j=>[key(j),j]));
@@ -482,62 +509,48 @@ async function update(auto){
 }
 
 /* personligt brev */
-const CV_TEXT=`Daniel Jansson. Säljare som kan tekniken bakom produkten. Tränar svenska landslaget på fritiden.
-Flyttar till Järpentrakten (Bonäshamn) vid årsskiftet. Beslutat och långsiktigt. Öppen för roller inom försäljning, affärsutveckling och teknisk kundkontakt. Tillgänglig för intervju redan nu, på plats eller digitalt. B-körkort, egen bil, van att resa i tjänsten. Svenska (modersmål), engelska (mycket goda kunskaper).
-PROFIL: 24 år inom teknisk B2B-försäljning, med grund i verkstads- och elektronikproduktion. Byggt kundrelationer mot elgrossister i hela Norden, drivit eget bolag i nio år och säljer i dag till kommuner och kommunala bostadsbolag. Elittränare för svenska landslaget i Short Track i elva år. Långsiktighet, disciplin och förmågan att få människor att vilja hålla kontakten.
-ERFARENHET:
-- Säljare, AMAX Konsult AB (2024–): säljer dokumentationslösningar till kommuner och kommunala bostadsbolag – offentlig sektor, offertarbete, flera beslutsfattare och långa relationer.
-- Ägare och säljare, Cimco Nordic AB (2014–2023): byggde och drev försäljningen mot elgrossister i Sverige, Norge, Danmark och Finland. Ansvar för kundrelationer, affärsutveckling och hela affärens resultat.
-- Säljare, Cimtools Scandinavia AB (2005–2014): teknisk försäljning mot återförsäljar- och grossistledet. Nästan 20 år i samma bransch, kunder som följt med hela vägen.
-- Säljare, ESD Center AB (2001–2005): första renodlade säljrollen.
-- Elektronikmontör, SattControl, ABB Automation, Flextronics (1994–2001): sju år i industriell produktion.
-- Butiksbiträde Shell Lysekil, verkstadsarbetare Gökens Svets och Mekaniska (1988–1994).
-LEDARSKAP: Elittränare, svenska landslaget i Short Track (2014–2025), Svenska Skridskoförbundet – planering, utveckling av individer, prestation när det gäller. Landslagsåkare 1989–1998.
-KOMPETENS: teknisk försäljning, B2B, nykunds- och relationsförsäljning, offertarbete, förhandling, affärsutveckling, Norden, offentlig sektor, eget företagande, Microsoft 365. Branscher: elgrossist och installation, industri och tillverkning, kommun och kommunala bostadsbolag.
-UTBILDNING: Fyraårig teknisk linje, maskin (1988). Värnplikt televapensoldat S1.`;
-const EVIDENCE=[
- {k:['försäljning','säljare','sälj','b2b','teknisk','account','kundansvar','affär'],have:'24 år inom teknisk B2B-försäljning',say:'Jag har arbetat med teknisk B2B-försäljning i 24 år, och min styrka är att jag förstår tekniken bakom det jag säljer.'},
- {k:['affärsutveckl','ansvar','resultat','driv','självständig','eget','norden','distrikt','grossist','återförsälj','key account','nykund'],have:'Ägde och drev Cimco Nordic i nio år, med försäljning mot elgrossister i fyra nordiska länder',say:'I nio år drev jag eget bolag, Cimco Nordic, där jag byggde upp försäljningen mot elgrossister i Sverige, Norge, Danmark och Finland, med ansvar för både kundrelationer, affärsutveckling och resultat.'},
- {k:['offentlig','kommun','offert','upphandl','beslutsfattare','förhandl','relation','långsiktig'],have:'Säljer i dag till kommuner och kommunala bostadsbolag, med offertarbete och flera beslutsfattare',say:'I dag säljer jag dokumentationslösningar till kommuner och kommunala bostadsbolag, där affärerna bygger på offertarbete, flera beslutsfattare och långa relationer.'},
- {k:['elektronik','industri','produktion','installation','el','montör','tekni','verkstad','maskin','produkt'],have:'Sju år som elektronikmontör hos SattControl, ABB och Flextronics, teknisk linje maskin',say:'Min grund är sju år som elektronikmontör i industrin hos bland andra ABB. Att veta hur saker faktiskt sitter ihop gör att jag kan prata teknik med tekniker.'},
- {k:['ledar','team','coach','planering','struktur','samarbet','mål','engag','utveckla'],have:'Elittränare för svenska landslaget i Short Track i elva år',say:'Parallellt har jag i elva år varit elittränare för svenska landslaget i Short Track, ett ledarskap som kräver planering, tålamod och tydlighet.'},
- {k:['körkort','resa','bil','fält','region','kunder i','besök'],have:'B-körkort, egen bil och van att resa i tjänsten',say:'Jag har B-körkort och egen bil och är van att resa i tjänsten.'},
-];
+const CV_TEXT_DEFAULT=P.cv||'';
+const cvText=()=>(S.cvText&&S.cvText.trim())||CV_TEXT_DEFAULT;
+const myName=()=>P.name||(S.contact&&S.contact.name)||'';
+const EV=()=>(S.evidence&&S.evidence.length?S.evidence:P.evidence)||[];
+const DRAFT=()=>S.draft||P.draft;
 function requirements(desc){
-  const lines=(desc||'').split(/\n|•|·|(?<=\.)\s+(?=[A-ZÅÄÖ])/).map(s=>s.replace(/^[\s\-*–]+/,'').trim()).filter(s=>s.length>=18&&s.length<=170);
-  const strong=/(erfarenhet|meriterande|krav|du har|du är|vi tror att du|körkort|utbildning|kunskap|förmåga|van vid|bakgrund|b2b|självständig|driv)/gi;
+  const lines=(desc||'').split(/\n|•|·|(?<=\.)\s+(?=[A-ZÅÄÖ])/).map(s=>s.replace(/^[\s\-*–]+/,'').trim()).filter(s=>s.length>=28&&s.length<=200);
+  const strong=/(erfarenhet|meriterande|krav|du har|du är|vi tror att du|körkort|utbildning|kunskap|förmåga|van vid|bakgrund|b2b|självständig|driv|experience|you have|you are|required|qualification|skills|knowledge|background|ability|proven|track record)/gi;
   const ranked=[];const seen=new Set();
   lines.forEach((l,i)=>{if(seen.has(l)||/:$/.test(l))return;seen.add(l);const s=(l.match(strong)||[]).length*2+(/^(har|är|kan|du|erfarenhet|god|goda|mycket|b-körkort|körkort)/i.test(l)?1:0);if(s>=2)ranked.push({l,i,s})});
   return ranked.sort((a,b)=>b.s-a.s).slice(0,6).sort((a,b)=>a.i-b.i).map(x=>x.l);
 }
 function bestEvidence(text){
   const l=text.toLowerCase();let best=null,bs=0;
-  for(const e of EVIDENCE){const s=e.k.filter(k=>l.includes(k)).length;if(s>bs){bs=s;best=e}}
+  for(const e of EV()){const s=e.k.filter(k=>l.includes(k)).length;if(s>bs){bs=s;best=e}}
   return best;
 }
+function fill(s,j){
+  const keepCase=/[A-ZÅÄÖ][a-zåäö]*\b.*\b[A-ZÅÄÖ]/.test(j.title)||/^[A-ZÅÄÖ]{2}/.test(j.title);
+  const tl=j.title.toLowerCase().startsWith('vi ')?'personal':keepCase?j.title:j.title.charAt(0).toLowerCase()+j.title.slice(1);
+  const emp=(j.employer||'').replace(/\s*\(publ\)/i,'').replace(/\s+\d{3,}\b/g,'').replace(/\s+(AB|Aktiebolag|Kommanditbolag|HB|KB)$/i,'').trim();
+  return s.replace(/\{employer\}/g,emp).replace(/\{title_l\}/g,tl).replace(/\{title\}/g,j.title)
+    .replace(/\{place_in\}/g,j.place&&!j.remote?' i '+j.place:'').replace(/\{name\}/g,myName()||'[Ditt namn]');
+}
 function draftLetter(j){
-  const reqs=requirements(j.desc);const used=new Set();
-  reqs.forEach(r=>{const e=bestEvidence(r);if(e)used.add(e)});
-  [0,1].forEach(i=>used.add(EVIDENCE[i]));
-  const ev=EVIDENCE.filter(e=>used.has(e)).slice(0,4);
-  const place=j.place&&!j.remote?` i ${j.place}`:'';
-  const p1=`Hej!\n\nJag såg att ${j.employer} söker ${j.title.toLowerCase().startsWith('vi ')?'personal':j.title.charAt(0).toLowerCase()+j.title.slice(1)}${place}, och jag vill gärna söka tjänsten. Vid årsskiftet flyttar jag till Järpen – ett beslutat och långsiktigt steg – och jag letar efter en roll där min erfarenhet av teknisk försäljning gör nytta i regionen.`;
-  const p2=ev.slice(0,2).map(e=>e.say).join(' ');
-  const p3=ev.slice(2).map(e=>e.say).join(' ')||EVIDENCE[4].say;
-  const p4=`Jag berättar gärna mer om hur jag kan bidra hos ${j.employer}. Jag är tillgänglig för intervju redan nu, på plats eller digitalt.\n\nVänliga hälsningar\nDaniel Jansson`;
-  return [p1,p2,p3,p4].join('\n\n');
+  const E=EV(),D=DRAFT();
+  const head=(j.title+' '+(j.occ||'')).toLowerCase(),body=(j.desc||'').toLowerCase();
+  const ranked=E.map((e,i)=>({e,i,s:e.k.reduce((a,k)=>a+(head.includes(k)?3:0)+(body.includes(k)?1:0),0)}))
+    .sort((a,b)=>b.s-a.s||a.i-b.i);
+  let pick=ranked.filter(x=>x.s>0).slice(0,3).map(x=>x.e);
+  if(pick.length<2)pick=pick.concat(E.filter(e=>!pick.includes(e)).slice(0,2-pick.length));
+  const p2=pick.slice(0,2).map(e=>e.say).join(' ')||'[Beskriv här vad i din erfarenhet som matchar rollen bäst.]';
+  const p3=pick.slice(2).map(e=>e.say).join(' ')||(E.length?E[P.fallback??E.length-1].say:'[Ge ett konkret exempel från CV:t.]');
+  return [fill(D.p1,j),p2,p3,fill(D.p4,j)].join('\n\n');
 }
 function aiPrompt(j){
-  const travel=j.dmin!=null&&!j.remote?`Arbetsplatsen ligger cirka ${j.dist} km (${fmtMin(j.dmin)}) med bil från hans nya hem i Bonäshamn.`:'';
-  return `Skriv ett personligt brev på svenska för Daniel Jansson till tjänsten nedan.
+  const travel=j.dmin!=null&&!j.remote?P.travelText.replace('{km}',j.dist).replace('{min}',fmtMin(j.dmin)):'';
+  const cv=cvText();
+  return `${fill(P.promptHead,j)}
 
 Krav på brevet:
-- Högst 280 ord, så att det får plats på en A4 tillsammans med rubrik.
-- Rak, varm och konkret ton. Inga klichéer som "jag är en lagspelare".
-- Koppla annonsens viktigaste krav till konkreta erfarenheter i CV:t.
-- Nämn kort att han flyttar till Järpen vid årsskiftet och att flytten är beslutad. ${travel}
-- Hitta inte på siffror, resultat eller erfarenheter som inte står i CV:t.
-- Svara bara med brevtexten: börja med en hälsning och avsluta med "Vänliga hälsningar" och "Daniel Jansson". Ingen rubrik, inga kontaktuppgifter, inga kommentarer.
+${P.promptRules.map(r=>'- '+fill(r,j).replace('{travel}',travel)).join('\n')}
 
 ANNONS
 Titel: ${j.title}
@@ -547,7 +560,7 @@ ${j.deadline?'Sista ansökningsdag: '+j.deadline+'\n':''}Annonstext:
 ${(j.desc||'(Ingen text, se annonsen: '+j.sources[0].url+')').slice(0,2200)}
 
 CV
-${CV_TEXT}`;
+${cv||'(Mitt CV bifogas som fil i den här chatten – läs det noga innan du skriver.)'}`;
 }
 let LT=null;
 function openLetter(id){
@@ -559,14 +572,20 @@ function openLetter(id){
   $('#ltMatch').innerHTML=reqs.length?'<tr><th>Annonsen</th><th>Från CV:t</th></tr>'+reqs.map(r=>{const e=bestEvidence(r);return `<tr><td>${esc(r)}</td><td>${e?esc(e.have):'<span class="small">Inget tydligt i CV:t, ta upp i intervjun</span>'}</td></tr>`}).join(''):'<tr><td class="small">Annonsen har ingen text att analysera. Öppna annonsen och läs kraven där.</td></tr>';
   const d=new Date().toLocaleDateString('sv-SE',{day:'numeric',month:'long',year:'numeric'});
   $('#ltBanner').innerHTML=`<b>Ansökan: ${esc(j.title)}</b>${esc(j.employer)}${j.place&&!j.remote?', '+esc(j.place):''}`;
-  $('#ltDate').textContent='Järpen, '+d;
+  $('#ltDate').textContent=(P.letterCity||(S.contact&&S.contact.city)||'')+(P.letterCity||(S.contact&&S.contact.city)?', ':'')+d;
   $('#ltBody').textContent=(S.letters[id]&&S.letters[id].text)||draftLetter(j);
   renderContact();
   document.querySelector('nav.tabs button[data-tab="letter"]').click();window.scrollTo(0,0);
 }
 function renderContact(){
-  const c=S.contact||{};$('#ctPhone').value=c.phone||'';$('#ctEmail').value=c.email||'';
-  $('#ltContact').textContent=[c.phone,c.email,'Svedala → Järpen','B-körkort, egen bil','svenska, engelska'].filter(Boolean).join('  ·  ');
+  const c=S.contact||{};['Name','City','Phone','Email'].forEach(k=>{const el=$('#ct'+k);if(el)el.value=c[k.toLowerCase()]||''});
+  const vals={phone:c.phone,email:c.email,city:c.city,name:c.name};
+  const parts=P.contactLine.map(x=>x.startsWith('$')?vals[x.slice(1)]:x).filter(Boolean);
+  const el=$('#ltContact');if(el)el.innerHTML=parts.map(esc).join(P.contactSep||'  ·  ');
+  if(!P.name){const n=(c.name||'Ditt Namn').trim().split(/\s+/);const nm=document.getElementById('ltName');if(nm)nm.innerHTML=esc(n[0])+'<br>'+esc(n.slice(1).join(' '));
+    const fn=document.getElementById('ltFootName');if(fn)fn.textContent=c.name||'';
+    const tg=document.getElementById('ltTag');if(tg)tg.innerHTML=c.tagline?esc(c.tagline).replace('❤','<span class="h">❤</span>'):'';
+    const rl=document.getElementById('ltRole');if(rl)rl.textContent=c.role||'';}
 }
 
 /* rendering */
@@ -576,13 +595,15 @@ function view(){
     if(j.lat!=null){if(S.home==='hem'&&j.drive_km!=null){d=j.drive_km;dm=j.drive_min;road=true}else d=Math.round(km(home,j)*1.25)}
     return Object.assign({},j,s,{dist:d,dmin:dm,road})});
 }
-const isOsd=j=>/östersund|ostersund|frösön/i.test((j.muni||'')+' '+(j.place||''));
+const DOMAIN_RX=P.domainRx?new RegExp(P.domainRx,'i'):null,SENIOR_RX=P.seniorRx?new RegExp(P.seniorRx,'i'):null;
+const AREA_RX=P.hideArea?new RegExp(P.hideArea.rx,'i'):null;
+const isOsd=j=>!!AREA_RX&&AREA_RX.test((j.muni||'')+' '+(j.place||''));
 const mins=j=>j.dmin!=null?j.dmin:(j.dist!=null?Math.round(j.dist*0.95):null);
 function inArea(j,ignoreOsd){
   if(j.remote)return S.remote;
   if(j.dist==null||j.dist>200)return false;
   if(S.noOsd&&!ignoreOsd&&isOsd(j))return false;
-  return mins(j)<=+S.maxMin;
+  return P.quickUnit==='km'?j.dist<=+S.maxMin:mins(j)<=+S.maxMin;
 }
 const st=id=>(S.status[id]&&S.status[id].s)||'';
 function filtered(all){
@@ -590,6 +611,12 @@ function filtered(all){
   let l=all.filter(j=>inArea(j));
   if(src)l=l.filter(j=>j.sources.some(s=>s.name===src));
   if(S.minSal)l=l.filter(j=>{const e=salary(j);return e&&e.hi>=S.minSal});
+  const kd=$('#fKind').value,lv=$('#fLevel').value;
+  if(kd==='anst')l=l.filter(j=>['anst','rekryterare'].includes(kind(j)));
+  if(kd==='konsultalla')l=l.filter(j=>['konsult','uppdrag'].includes(kind(j)));
+  if(kd==='uppdrag')l=l.filter(j=>kind(j)==='uppdrag');
+  if(lv==='head')l=l.filter(j=>RX_HEADUP.test(j.title));
+  if(lv==='exec')l=l.filter(j=>RX_EXEC.test(j.title));
   if(q)l=l.filter(j=>(j.title+' '+j.employer+' '+j.place+' '+j.occ).toLowerCase().includes(q));
   if(min)l=l.filter(j=>(j.score||0)>=min);
   if(show==='new')l=l.filter(isNew);
@@ -619,7 +646,7 @@ function renderReport(all){
   let t=S.lastRun===S.firstRun?`Första hämtningen är klar. Från och med nästa gång markeras nya jobb med Ny.`:nw.length?`${nw.length} nya jobb i ditt område de senaste två dygnen, varav ${nwS.length} starka matchningar.`:'Inga nya jobb i ditt område de senaste två dygnen.';
   t+=` ${near} möjliga eller starka matchningar ligger inom 30 km bilväg från ${HOMES[S.home].name}.`;
   if(best)t+=` Närmaste starka matchning: ${best.title} (${best.employer}), ${best.dist} km${best.dmin!=null?', '+fmtMin(best.dmin):''} bort.`;
-  if(S.noOsd){const hid=all.filter(j=>!j.remote&&isOsd(j)&&j.score>=70).length;if(hid)t+=` ${hid} starka matchningar i Östersund är dolda.`}
+  if(S.noOsd){const hid=all.filter(j=>!j.remote&&isOsd(j)&&j.score>=70).length;if(hid)t+=` ${hid} starka matchningar i ${P.hideArea.name} är dolda.`}
   if(due.length)t+=` ${due.length} av jobben du har markerat stänger inom tre dagar.`;
   $('#report').innerHTML=`<div><h2>Dagens läge</h2><p>${esc(t)}</p><div class="stats">
     <div class="stat"><b>${area.length}</b><span>jobb i området</span></div>
@@ -632,7 +659,7 @@ function renderReport(all){
   $('#statSoon').onclick=()=>{$('#fShow').value='soon';$('#fScore').value='40';$('#fSort').value='deadline';LIMIT=60;S.f={score:'40',show:'soon',sort:'deadline',src:$('#fSrc').value};save();renderList(view());$('#list').scrollIntoView({behavior:'smooth'})};
   $('#btnCopy').onclick=()=>{
     const top=(nw.length?nw:strong).slice().sort((a,b)=>(b.score||0)-(a.score||0)).slice(0,8);
-    const s=['Daniels jobbtavla, '+fmtDT(S.lastRun),t,'',...top.map(j=>`${j.score} ${j.title} – ${j.employer}, ${j.place}${j.dist!=null?' ('+j.dist+' km'+(j.dmin!=null?', '+fmtMin(j.dmin):'')+')':''} [${j.sources.map(x=>x.name).join(', ')}]\n${j.sources[0].url}`)].join('\n');
+    const s=[P.title+', '+fmtDT(S.lastRun),t,'',...top.map(j=>`${j.score} ${j.title} – ${j.employer}, ${j.place}${j.dist!=null?' ('+j.dist+' km'+(j.dmin!=null?', '+fmtMin(j.dmin):'')+')':''} [${j.sources.map(x=>x.name).join(', ')}]\n${j.sources[0].url}`)].join('\n');
     (navigator.clipboard?navigator.clipboard.writeText(s):Promise.reject()).then(()=>toast('Dagsrapporten är kopierad.'),()=>prompt('Kopiera texten:',s));
   };
 }
@@ -646,7 +673,7 @@ function card(j){
   return `<article class="job${['nej','avslag'].includes(s)?' dim':''}" data-id="${esc(j.id)}">
   <div class="score ${tc}"><b>${j.score==null?'–':j.score}</b><span>${tl}</span></div>
   <div class="jbody"><div class="jhead"><h3><a href="${esc(j.sources[0].url)}" target="_blank" rel="noopener">${esc(j.title)}</a></h3>
-    ${isNew(j)?'<span class="tag new">Ny</span>':''}${far}
+    ${isNew(j)?'<span class="tag new">Ny</span>':''}${far}${KIND_LABEL[kind(j)]?`<span class="tag kind-${kind(j)}">${KIND_LABEL[kind(j)]}</span>`:''}${P.levels&&RX_EXEC.test(j.title)?'<span class="tag exec">Direktörsnivå</span>':''}
     ${dl!=null&&dl>=0&&dl<=5?`<span class="tag due">${dl===0?'Sista dag idag':dl===1?'Sista dag imorgon':dl+' dagar kvar'}</span>`:''}</div>
     <div class="meta">${meta}${j.deadline?' – sista dag '+fmtDate(j.deadline):''}</div>
     ${j.published?`<div class="pub">${fmtPub(j.published)}</div>`:''}
@@ -673,7 +700,7 @@ function renderList(all){
 let map,cluster,rings,homeMarker,markers={};
 function initMap(){
   if(!window.L){$('#map').innerHTML='<div class="empty-state" style="border:0">Kartan kunde inte laddas. Kontrollera internetanslutningen.</div>';return}
-  map=L.map('map',{scrollWheelZoom:false}).setView([HOMES.jarpen.lat,HOMES.jarpen.lon],9);
+  map=L.map('map',{scrollWheelZoom:false}).setView([HOMES[P.defaultHome].lat,HOMES[P.defaultHome].lon],9);
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:17,attribution:'Karta © Esri, HERE, Garmin, OpenStreetMap'}).addTo(map);
   cluster=L.markerClusterGroup({maxClusterRadius:40,showCoverageOnHover:false,iconCreateFunction:c=>{
     const ms=c.getAllChildMarkers();const best=Math.max(...ms.map(m=>m.options.sc??-1));const col=tier(best<0?null:best)[2];const n=c.getChildCount();const sz=n>40?44:n>9?38:32;
@@ -684,7 +711,7 @@ function renderMap(list){
   if(!map)return;
   const h=HOMES[S.home];rings.clearLayers();
   [15,30,60].forEach(r=>L.circle([h.lat,h.lon],{radius:r*1000,color:'#1E4D43',weight:1,fill:false,dashArray:'4 6',interactive:false}).addTo(rings));
-  L.circleMarker([h.lat,h.lon],{radius:7,color:'#fff',weight:2,fillColor:'#C2352B',fillOpacity:1}).bindTooltip(S.home==='hem'?'Hemma, Bonäshamn 665':h.name,{permanent:S.home==='hem',direction:'right'}).addTo(rings);
+  L.circleMarker([h.lat,h.lon],{radius:7,color:'#fff',weight:2,fillColor:'#C2352B',fillOpacity:1}).bindTooltip(S.home==='hem'?P.homeLabel:h.name,{permanent:S.home==='hem',direction:'right'}).addTo(rings);
   cluster.clearLayers();markers={};
   const pts=[];
   for(const j of list){
@@ -725,8 +752,8 @@ document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{
   if(b.dataset.tab==='jobs'&&map)setTimeout(()=>map.invalidateSize(),50);
 });
 $('#btnUpdate').onclick=()=>update(false);
-['#fText','#fScore','#fShow','#fSort','#fSrc'].forEach(s=>$(s).addEventListener('input',()=>{S.f={score:$('#fScore').value,show:$('#fShow').value,sort:$('#fSort').value,src:$('#fSrc').value};save();LIMIT=60;renderList(view())}));
-const F=S.f||{};if(F.score!=null)$('#fScore').value=F.score;if(F.show)$('#fShow').value=F.show;if(F.sort)$('#fSort').value=F.sort;
+['#fText','#fScore','#fShow','#fSort','#fSrc','#fKind','#fLevel'].forEach(s=>$(s).addEventListener('input',()=>{S.f={score:$('#fScore').value,show:$('#fShow').value,sort:$('#fSort').value,src:$('#fSrc').value,kind:$('#fKind').value,level:$('#fLevel').value};save();LIMIT=60;renderList(view())}));
+const F=S.f||{};if(F.kind)$('#fKind').value=F.kind;if(F.level)$('#fLevel').value=F.level;if(F.score!=null)$('#fScore').value=F.score;if(F.show)$('#fShow').value=F.show;if(F.sort)$('#fSort').value=F.sort;
 $('#fHome').value=S.home;$('#fRemote').checked=S.remote;$('#fNoOsd').checked=!!S.noOsd;
 function syncQuick(){document.querySelectorAll('#qSal button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.sal===String(S.minSal||0)));document.querySelectorAll('.quick:not(#qSal) button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.min===String(S.maxMin)))}
 syncQuick();
@@ -757,6 +784,8 @@ $('#btnKwAdd').onclick=addKw;$('#kwAdd').addEventListener('keydown',e=>{if(e.key
 function addAv(){const v=$('#avAdd').value.trim().toLowerCase();if(!v)return;if(!S.avoid.includes(v))S.avoid.push(v);$('#avAdd').value='';rxc={};save();render()}
 $('#btnAvAdd').onclick=addAv;$('#avAdd').addEventListener('keydown',e=>{if(e.key==='Enter')addAv()});
 $('#avChips').addEventListener('click',e=>{if(e.target.dataset.avdel!=null){S.avoid.splice(+e.target.dataset.avdel,1);rxc={};save();render()}});
+$('#cvText').value=S.cvText||'';
+$('#cvText').addEventListener('input',()=>{S.cvText=$('#cvText').value;save()});
 $('#btnAnalyze').onclick=()=>{
   const t=$('#cvText').value;if(t.trim().length<40){toast('Klistra in mer text först.');return}
   const toks=(t.toLowerCase().match(/[a-zåäöéü][a-zåäöéü-]{3,}/g)||[]).filter(x=>!STOP.has(x));const f={};toks.forEach(x=>f[x]=(f[x]||0)+1);
@@ -767,17 +796,17 @@ $('#btnAnalyze').onclick=()=>{
 };
 function download(name,content,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 $('#btnCsv').onclick=()=>{
-  const lab=Object.fromEntries(STATUSES);const rows=[['Matchning','Status','Titel','Arbetsgivare','Ort','Km bilväg','Körtid min','Lönegissning från','Lönegissning till','Anställning','Sista dag','Källor','Länk','Anteckning']];
-  view().filter(j=>inArea(j)).sort((a,b)=>(b.score||0)-(a.score||0)).forEach(j=>rows.push([j.score??'',lab[st(j.id)]||'',j.title,j.employer,j.remote?'Distans':j.place,j.dist??'',j.dmin??'',(salary(j)||{}).lo??'',(salary(j)||{}).hi??'',j.type,j.deadline||'',j.sources.map(s=>s.name).join(', '),j.sources[0].url,(S.status[j.id]&&S.status[j.id].note)||'']));
+  const lab=Object.fromEntries(STATUSES);const rows=[['Matchning','Status','Titel','Arbetsgivare','Ort','Km bilväg','Körtid min','Lönegissning från','Lönegissning till','Anställning','Jobbtyp','Sista dag','Källor','Länk','Anteckning']];
+  view().filter(j=>inArea(j)).sort((a,b)=>(b.score||0)-(a.score||0)).forEach(j=>rows.push([j.score??'',lab[st(j.id)]||'',j.title,j.employer,j.remote?'Distans':j.place,j.dist??'',j.dmin??'',(salary(j)||{}).lo??'',(salary(j)||{}).hi??'',j.type,KIND_LABEL[kind(j)]||'Anställning',j.deadline||'',j.sources.map(s=>s.name).join(', '),j.sources[0].url,(S.status[j.id]&&S.status[j.id].note)||'']));
   download('daniel-jobb-'+new Date().toISOString().slice(0,10)+'.csv','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\r\n'),'text/csv;charset=utf-8');
 };
 $('#btnBackup').onclick=()=>download('daniel-jobb-backup-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(S),'application/json');
-$('#fileBackup').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!d||!('status' in d))throw 0;S=Object.assign(load(),d);rxc={};save();render();toast('Säkerhetskopian är inläst.')}catch(err){toast('Filen är ingen säkerhetskopia från jobbtavlan.')}};
+$('#fileBackup').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!d||!(('status' in d)||d.profile))throw 0;S=d.profile?Object.assign(S,d,{contact:Object.assign({},S.contact,d.contact)}):Object.assign(load(),d);$('#cvText').value=S.cvText||'';renderContact();rxc={};save();render();toast(d.profile?'Profilen är inläst.':'Säkerhetskopian är inläst.')}catch(err){toast('Filen är ingen säkerhetskopia från jobbtavlan.')}};
 
 $('#list').addEventListener('click',e=>{if(e.target.dataset.act==='letter')openLetter(e.target.closest('.job').dataset.id)});
 $('#ltBody').addEventListener('input',()=>{if(!LT)return;S.letters[LT.id]={text:$('#ltBody').innerText,ts:new Date().toISOString()};save()});
 $('#ltBody').addEventListener('paste',e=>{e.preventDefault();const tx=(e.clipboardData||window.clipboardData).getData('text');document.execCommand('insertText',false,tx)});
-['#ctPhone','#ctEmail'].forEach(s=>$(s).addEventListener('input',()=>{S.contact={phone:$('#ctPhone').value.trim(),email:$('#ctEmail').value.trim()};save();renderContact()}));
+['#ctName','#ctCity','#ctPhone','#ctEmail'].forEach(s=>$(s).addEventListener('input',()=>{S.contact={name:$('#ctName').value.trim(),city:$('#ctCity').value.trim(),phone:$('#ctPhone').value.trim(),email:$('#ctEmail').value.trim()};save();renderContact()}));
 async function copyText(s){try{await navigator.clipboard.writeText(s);return true}catch(e){return false}}
 document.querySelectorAll('[data-ai]').forEach(b=>b.onclick=async()=>{
   if(!LT)return;const p=aiPrompt(LT);const ok=await copyText(p);
@@ -791,7 +820,7 @@ function preparePrint(){
   const c=$('#sheet').cloneNode(true);c.removeAttribute('id');c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));c.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
   pa.innerHTML='';pa.appendChild(c);
 }
-$('#btnPdf').onclick=()=>{if(!LT)return;preparePrint();const old=document.title;document.title='Personligt brev - Daniel Jansson - '+LT.employer;toast('Välj Spara som PDF i utskriftsrutan.');setTimeout(()=>{window.print();document.title=old},300)};
+$('#btnPdf').onclick=()=>{if(!LT)return;preparePrint();const old=document.title;document.title='Personligt brev - '+(myName()||'')+' - '+LT.employer;toast('Välj Spara som PDF i utskriftsrutan.');setTimeout(()=>{window.print();document.title=old},300)};
 $('#btnReset').onclick=()=>{if(!LT)return;if(!confirm('Ersätta brevet med ett nytt utkast?'))return;delete S.letters[LT.id];save();$('#ltBody').textContent=draftLetter(LT)};
 
 initMap();
