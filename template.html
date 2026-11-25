@@ -214,6 +214,7 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
     <button role="tab" aria-selected="true" data-tab="jobs">Jobb och karta</button>
     <button role="tab" aria-selected="false" data-tab="track">Mina ansökningar</button>
     <button role="tab" aria-selected="false" data-tab="letter">Personligt brev</button>
+    <button role="tab" aria-selected="false" data-tab="mycv" id="tabCv" hidden>Mitt CV</button>
     <button role="tab" aria-selected="false" data-tab="cv">Sökord</button>
     <button role="tab" aria-selected="false" data-tab="more">Källor</button>
   </nav>
@@ -298,6 +299,15 @@ footer{padding:30px 0 40px;color:var(--ink-2);font-size:.82rem}
       </div>
       <p class="small" style="margin:0 0 8px">Brevet går att redigera direkt. Ändringar sparas automatiskt för det här jobbet.</p>
 __SHEET__
+    </div>
+  </section>
+
+  <section class="panel" id="p-mycv">
+    <div class="card">
+      <h2>Mitt CV</h2>
+      <p>Tre versioner med samma innehåll. Välj efter hur du skickar ansökan.</p>
+      <div class="tablewrap"><table class="src" id="cvTable"></table></div>
+      <p class="small" style="margin-top:10px">Referenserna står inte med i de här versionerna, eftersom sidan går att nå för alla som har länken. Skicka namn och nummer först när en arbetsgivare ber om dem.</p>
     </div>
   </section>
 
@@ -401,6 +411,12 @@ function km(a,b){const r=Math.PI/180,dl=(b.lat-a.lat)*r,dn=(b.lon-a.lon)*r;const
 /* matching */
 const stem=w=>{w=w.toLowerCase().trim();return w.includes(' ')||w.length<=6?w:w.slice(0,-2)};
 let rxc={};const rx=w=>rxc[w]||(rxc[w]=new RegExp('(^|[^a-zåäöéü0-9])'+rxEsc(stem(w)),'i'));
+if(P.kwVersion&&S.kwV!==P.kwVersion){ // nya förvalda sökord läggs till utan att ta bort egna ändringar
+  const have=new Set(S.kw.map(k=>stem(k.t)));let add=0;
+  DEFAULT_KW.forEach(k=>{if(!have.has(stem(k.t))){S.kw.push(k);add++}});
+  DEFAULT_AV.forEach(w=>{if(!S.avoid.includes(w))S.avoid.push(w)});
+  S.kwV=P.kwVersion;S.kwAdded=add;save();
+}
 const txt=j=>(j.title+' '+j.occ+' '+j.employer+' '+j.desc).toLowerCase();
 function scoreJob(j){
   const act=S.kw.filter(k=>k.w>0);if(!act.length)return{score:null,hits:[]};
@@ -823,9 +839,14 @@ function preparePrint(){
 $('#btnPdf').onclick=()=>{if(!LT)return;preparePrint();const old=document.title;document.title='Personligt brev - '+(myName()||'')+' - '+LT.employer;toast('Välj Spara som PDF i utskriftsrutan.');setTimeout(()=>{window.print();document.title=old},300)};
 $('#btnReset').onclick=()=>{if(!LT)return;if(!confirm('Ersätta brevet med ett nytt utkast?'))return;delete S.letters[LT.id];save();$('#ltBody').textContent=draftLetter(LT)};
 
+if(P.cvFiles&&P.cvFiles.length){
+  $('#tabCv').hidden=false;
+  $('#cvTable').innerHTML='<tr><th>Version</th><th>Använd när</th><th></th></tr>'+P.cvFiles.map(f=>`<tr><td><b>${esc(f.name)}</b></td><td>${esc(f.use)}</td><td><a class="btn btn-line btn-sm" href="${esc(f.file)}" target="_blank" rel="noopener">Öppna</a> <a class="btn btn-line btn-sm" href="${esc(f.file)}" download>Ladda ner</a></td></tr>`).join('');
+}
 initMap();
 if(!S.lastRun){stampSeen()}
 render();
+if(S.kwAdded){setTimeout(()=>{toast(S.kwAdded+' nya sökord har lagts till från din uppdaterade profil.');S.kwAdded=0;save()},1500)}
 if(!S.lastRun||Date.now()-new Date(S.lastRun).getTime()>3*36e5||location.protocol.startsWith('http'))update(true);
 })();
 </script>

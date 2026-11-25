@@ -1,6 +1,6 @@
 """Profiler för jobbtavlorna. build.py bygger en sida per profil."""
 
-DANIEL_CV = 'Daniel Jansson. Säljare som kan tekniken bakom produkten. Tränade svenska landslaget i Short Track.\nFlyttar med sin fru till Bonäshamn utanför Järpen vid årsskiftet, för att komma närmare familjen (sonen har jobbat som skidlärare i Åre sedan 2016). Huset är köpt, flytten beslutad och långsiktig. Öppen för många slags jobb: försäljning, butik (gärna bygghandel eller sport), teknisk kundkontakt, körning (t.ex. taxi), kan tänka sig att utbilda sig till elektriker. Vill pendla högst cirka 50 km. Tillgänglig för intervju redan nu, på plats eller digitalt. B-körkort, egen bil, bilkörning har varit en stor del av arbetslivet. Svenska (modersmål), engelska (mycket goda kunskaper).\nERFARENHET:\n- Säljare, AMAX Konsult AB (2024–): säljer dokumentation för långsiktig fastighetsförvaltning – arkitektritningar, underlag för brandskydd/SBA, ytor m.m. Har träffat 92 kunder, varav 85 kommuner eller kommunala bostadsbolag, 6 privata fastighetsbolag och 1 industri. Har sålt in skanning av ritningsunderlag till en stor kommun i Skåne, drönarskanning och uppritning av skötselytor till en annan kommun och senast skanning av 400 A1-ritningar. Offertarbete, flera beslutsfattare, långa relationer.\n- Ägare och säljare, Cimco Nordic AB (2014–2023): byggde och drev försäljningen av Cimcos verktyg till elgrossister i Norden. Försäljningen växte från cirka 1,5 miljoner euro (2015) till 2,2 miljoner euro (2022). Sista helåret: Danmark 47 %, Norge 36 %, Finland 7 %, Island 6 %, Sverige 4 %. Kunder bland annat Lemvigh-Müller och Solar (Danmark), SLO (Finland), Johan Rönning (Island); i Norge och Sverige via partnern Melbyes säljorganisation. Besökte grossisterna 2–4 gånger per år och deltog på mässor. Största framgång: danska Lemvigh-Müller växte från cirka 300 000 till 520 000 euro per år, och han lade själv in de nya artiklarna i kundens system, på danska.\n- Säljare, Cimtools Scandinavia AB (2005–2014): teknisk försäljning till samma grossistkunder, som han sedan tog med till Cimco Nordic. Nästan 20 år i samma bransch.\n- Säljare, ESD Center AB (2001–2005): sålde skydd mot statisk elektricitet (förpackningar, skydd för utrustning, personligt skydd) till elektroniktillverkare, stora som små.\n- Elektronikmontör, SattControl, ABB Automation, Flextronics (1994–2001): monterade elektronik i apparatskåp m.m. för kunder från lokala tillverkare till Alfa Laval. På Flextronics ansvarig för underhållsgruppen och för inköp av skyddsutrustning och produktionsinredning.\n- Butiksbiträde Shell Lysekil, verkstadsarbetare Gökens Svets och Mekaniska (1988–1994).\nLEDARSKAP OCH IDROTT: Elittränare, svenska landslaget i Short Track (2014–2025), till största delen ideellt, 15–20 timmar per vecka under 2014–2019. Tränade 3–5 åkare; tog en OS-plats till Pyeongchang 2018 (åkaren blev inte uttagen av SOK). Bästa resultat 9:e plats på 1 500 m vid EM 2018. Har varit förbundskapten vid världscuper, EM, JVM och VM. Har gått ISU:s tränarutbildningar i skridsko- och materialteknik. Landslagsåkare 1989–1998. Alpin tävlingsåkare från 10 till 17 års ålder.\nHANTVERK: har byggt ett tiotal formgjutna skridskor (gipsavgjutning av foten, läder och kolfiber). Har lagt marksten i alla former och konstruerat och byggt trädäck, både mot berg och hus och direkt på mark.\nKOMPETENS: teknisk försäljning, B2B, nykunds- och relationsförsäljning, offertarbete, förhandling, export, affärsutveckling, Norden, offentlig sektor, eget företagande, Microsoft 365.\nUTBILDNING: Fyraårig teknisk linje, maskin (1988). Värnplikt televapensoldat S1.'
+DANIEL_CV = 'DANIEL JANSSON\nSäljare med teknisk bakgrund\n\nJag flyttar till Bonäshamn utanför Järpen vid årsskiftet. Min fru och jag har köpt hus där för att komma närmare familjen. Jag kan komma på intervju redan nu.\n\nPROFIL\nJag har jobbat som säljare av tekniska produkter i 24 år. Nio av dem drev jag eget bolag och sålde till elgrossister i hela Norden. Innan jag blev säljare stod jag sju år i elektronikproduktion, och det har jag haft nytta av varje gång en kund frågat hur något fungerar. I Åre kan jag tänka mig det mesta: sälja, stå i butik, jobba med teknik eller köra.\n\nARBETSLIVSERFARENHET\n2024–nu  Säljare, AMAX Konsult AB\nJag säljer ritningar och annan dokumentation som fastighetsägare behöver för att förvalta sina hus.\n- Kunderna är mest kommuner och kommunala bostadsbolag. Hittills har jag träffat 92 kunder.\n- Jag har sålt skanning av ritningsarkiv till en stor kommun i Skåne, drönarskanning av skötselytor till en annan och nu senast skanning av 400 ritningar i A1-format.\n\n2014–2023  Ägare och säljare, Cimco Nordic AB\nEget bolag. Jag sålde Cimcos handverktyg för elektriker till grossister i Norden.\n- Försäljningen gick från 1,5 miljoner euro 2015 till 2,2 miljoner 2022.\n- I Danmark, Finland och på Island träffade jag grossisterna själv några gånger om året. I Norge och Sverige sålde vi genom Melbye.\n- Mest stolt är jag över danska Lemvigh-Müller, som gick från ungefär 300 000 till 520 000 euro om året. Jag lade själv in alla nya artiklar i deras system, på danska.\n\n2005–2014  Säljare, Cimtools Scandinavia AB\nSamma verktyg och samma kunder. När jag startade eget följde kunderna med.\n\n2001–2005  Säljare, ESD Center AB\nSålde skydd mot statisk elektricitet till elektroniktillverkare: förpackningar, skydd för utrustning och personligt skydd.\n\n1994–2001  Elektronikmontör, SattControl, ABB Automation och Flextronics\nByggde ihop elektronik och apparatskåp åt kunder som Alfa Laval. På Flextronics hade jag också hand om underhållsgruppen och köpte in skyddsutrustning och inredning till produktionen.\n\n1988–1994  Butiksbiträde och verkstadsarbetare, Shell i Lysekil och Gökens Svets och Mekaniska i Uppsala\n\nIDROTT OCH LEDARSKAP\n2014–2025  Tränare, svenska landslaget i short track, Svenska Skridskoförbundet\nIdeellt vid sidan av jobbet, 15 till 20 timmar i veckan under de mest intensiva åren.\n- Hade tre till fem åkare och höll i träningar, planering och material.\n- Var förbundskapten på världscuper, EM, junior-VM och VM.\n- Bästa resultat var en niondeplats på 1 500 meter på EM 2018. Samma år tog vi en OS-plats.\n\n1989–1998  Landslagsåkare i short track\nÅkte själv i landslaget. Innan dess tävlade jag i alpint tills jag var 17.\n\nVARFÖR ÅRE\nVår son började som skidlärare i Åre 2016. Sedan dess har vi varit här två till tre gånger om året, både vinter och sommar. Nu flyttar vi upp för att komma närmare vårt barnbarn. Huset i Bonäshamn hittade vi av en slump och blev kära i direkt.\n\nÖPPEN FÖR\nJag kan tänka mig att sälja i en byggbutik eller köra taxi. Jag har också funderat på att skola om mig till elektriker. Pendlar gärna upp till fem mil.\n\nKOMPETENSER\n- Försäljning till företag (B2B)\n- Kundansvar och offerter\n- Butik och kundservice\n- Elektronik och montering\n- Underhåll och inköp\n- Ledarskap och träning\n\nUTBILDNING\n- Teknisk linje, maskin. Fyraårig, examen 1988\n- Internationella skridskoförbundets tränarutbildningar\n\nSPRÅK\n- Svenska och engelska\n- Klarar danska och norska i jobbet\n\nÖVRIGT\n- Egna skridskor: Har byggt ett tiotal skridskor själv, gjutna efter foten i läder och kolfiber.\n- Mark och trä: Lägger marksten och bygger trädäck. Har lärt mig hur viktigt underarbetet är.\n'
 
 DANIEL = {
     "file": "index.html", "data": "jobs.json",
@@ -35,13 +35,19 @@ DANIEL = {
     "nameFields": False, "levelSel": False,
     "P": {
         "quickUnit": "km", "defaultMax": 50, "maxVersion": 1,
+        "kwVersion": 2,
+        "cvFiles": [
+            {"name": "Designad (PDF)", "use": "När du mejlar en arbetsgivare eller lämnar över CV:t personligen", "file": "cv/Daniel_Jansson_CV.pdf"},
+            {"name": "Enkel (PDF)", "use": "När du laddar upp i ett ansökningssystem, t.ex. hos kommunen eller SkiStar", "file": "cv/Daniel_Jansson_CV_enkel.pdf"},
+            {"name": "Ren text", "use": "När ett formulär vill att du klistrar in ditt CV, eller när du ger det till en AI", "file": "cv/Daniel_Jansson_CV_text.txt"},
+        ],
         "key": "daniel-jobbtavla-v2", "title": "Daniels jobbtavla", "name": "Daniel Jansson", "cv": DANIEL_CV, "dataFile": "jobs.json",
         "homes": {"hem": {"name": "hemma i Bonäshamn", "short": "Hemma", "lat": 63.412945, "lon": 13.366713},
                   "jarpen": {"name": "Järpen centrum", "short": "Järpen", "lat": 63.348, "lon": 13.470},
                   "are": {"name": "Åre", "short": "Åre", "lat": 63.399, "lon": 13.081}},
         "homeOpts": [["hem", "Hemma, Bonäshamn 665"], ["jarpen", "Järpen centrum"], ["are", "Åre"]],
         "defaultHome": "jarpen", "homeLabel": "Hemma, Bonäshamn 665",
-        "kw": [["teknisk försäljning", 2], ["säljare", 2], ["försäljning", 2], ["b2b", 2], ["affärsutveckling", 2], ["kundansvarig", 2], ["key account", 2], ["account manager", 2], ["distriktsansvarig", 2], ["grossist", 2], ["elgrossist", 2], ["export", 1], ["kundrelationer", 1], ["offert", 1], ["förhandling", 1], ["nykund", 1], ["innesälj", 1], ["fältsälj", 1], ["butikssäljare", 2], ["byggvaruhus", 2], ["bygghandel", 2], ["järnhandel", 1], ["byggmaterial", 1], ["bauhaus", 1], ["byggmax", 1], ["xl-bygg", 1], ["beijer", 1], ["woody", 1], ["sportbutik", 1], ["skidor", 1], ["uthyrning", 1], ["elektriker", 2], ["elinstallation", 1], ["lärling", 1], ["installation", 1], ["elektronik", 1], ["industri", 1], ["underhåll", 1], ["inköp", 1], ["taxi", 2], ["chaufför", 1], ["förare", 1], ["fastighet", 1], ["ritning", 1], ["dokumentation", 1], ["offentlig sektor", 1], ["tränare", 1], ["ledarskap", 1]],
+        "kw": [["teknisk försäljning", 2], ["säljare", 2], ["försäljning", 2], ["b2b", 2], ["affärsutveckling", 2], ["kundansvarig", 2], ["key account", 2], ["account manager", 2], ["distriktsansvarig", 2], ["grossist", 2], ["elgrossist", 2], ["export", 1], ["kundrelationer", 1], ["offert", 1], ["förhandling", 1], ["nykund", 1], ["innesälj", 1], ["fältsälj", 1], ["butikssäljare", 2], ["byggvaruhus", 2], ["bygghandel", 2], ["järnhandel", 1], ["byggmaterial", 1], ["bauhaus", 1], ["byggmax", 1], ["xl-bygg", 1], ["beijer", 1], ["woody", 1], ["sportbutik", 1], ["skidor", 1], ["uthyrning", 1], ["elektriker", 2], ["elinstallation", 1], ["lärling", 1], ["installation", 1], ["elektronik", 1], ["industri", 1], ["underhåll", 1], ["inköp", 1], ["taxi", 2], ["chaufför", 1], ["förare", 1], ["fastighet", 1], ["ritning", 1], ["dokumentation", 1], ["offentlig sektor", 1], ["tränare", 1], ["ledarskap", 1], ["kundservice", 1], ["byggbutik", 2], ["trädgård", 1], ["skidlärare", 1], ["liftvärd", 1], ["drönare", 1], ["mässa", 1], ["danska", 1]],
         "avoid": ["legitimerad", "sjuksköterska", "läkare", "förskollärare", "lärare", "socionom", "psykolog", "undersköterska", "kock", "tandläkare"],
         "regionLabel": "Jämtland/Västernorrland",
         "hideArea": {"label": "Dölj Östersund", "rx": "östersund|ostersund|frösön", "name": "Östersund"},
@@ -61,8 +67,8 @@ DANIEL = {
                                     "kundansvar",
                                     "affär"
                         ],
-                        "have": "24 år inom teknisk B2B-försäljning",
-                        "say": "Jag har arbetat med teknisk B2B-försäljning i 24 år, och min styrka är att jag förstår tekniken bakom det jag säljer."
+                        "have": "24 år som säljare av tekniska produkter",
+                        "say": "Jag har jobbat som säljare av tekniska produkter i 24 år. Innan dess stod jag sju år i elektronikproduktion, och det har jag haft nytta av varje gång en kund frågat hur något fungerar."
             },
             {
                         "k": [
@@ -80,8 +86,8 @@ DANIEL = {
                                     "tillväxt",
                                     "mål"
                         ],
-                        "have": "Cimco Nordic: försäljningen växte från ca 1,5 till 2,2 miljoner euro per år (2015–2022)",
-                        "say": "I nio år drev jag eget bolag, Cimco Nordic, och sålde verktyg till elgrossister i hela Norden. Under min tid växte försäljningen från cirka 1,5 till 2,2 miljoner euro per år."
+                        "have": "Eget bolag i nio år, försäljningen gick från 1,5 till 2,2 miljoner euro",
+                        "say": "I nio år drev jag eget bolag och sålde handverktyg för elektriker till grossister i Norden. Försäljningen gick från 1,5 miljoner euro 2015 till 2,2 miljoner 2022."
             },
             {
                         "k": [
@@ -95,8 +101,8 @@ DANIEL = {
                                     "system",
                                     "kundvård"
                         ],
-                        "have": "Ökade försäljningen till danska Lemvigh-Müller från ca 300 000 till 520 000 euro per år",
-                        "say": "Min största kund, danska Lemvigh-Müller, växte från cirka 300 000 till 520 000 euro per år – och de nya artiklarna lade jag själv in i deras system, på danska."
+                        "have": "Lemvigh-Müller gick från ungefär 300 000 till 520 000 euro om året",
+                        "say": "Mest stolt är jag över danska Lemvigh-Müller, som gick från ungefär 300 000 till 520 000 euro om året. Jag lade själv in alla nya artiklar i deras system, på danska."
             },
             {
                         "k": [
@@ -111,8 +117,8 @@ DANIEL = {
                                     "bostad",
                                     "beslutsfattare"
                         ],
-                        "have": "AMAX: 92 kundmöten, varav 85 kommuner och kommunala bostadsbolag",
-                        "say": "På AMAX har jag träffat 92 kunder, varav 85 kommuner och kommunala bostadsbolag, och sålt in allt från skanning av ritningsunderlag till drönarskanning av skötselytor."
+                        "have": "Säljer till kommuner och kommunala bostadsbolag, har träffat 92 kunder",
+                        "say": "I dag säljer jag ritningar och dokumentation till kommuner och kommunala bostadsbolag. Hittills har jag träffat 92 kunder."
             },
             {
                         "k": [
@@ -129,8 +135,8 @@ DANIEL = {
                                     "maskin",
                                     "el-"
                         ],
-                        "have": "Sju år i elektronikproduktion (SattControl, ABB, Flextronics), ansvarig för underhåll och inköp",
-                        "say": "Min grund är sju år i elektronikproduktion hos SattControl, ABB och Flextronics, där jag också ansvarade för underhållsgruppen och inköp av utrustning."
+                        "have": "Sju år i elektronikproduktion, hade hand om underhåll och inköp på Flextronics",
+                        "say": "Jag har stått sju år i elektronikproduktion hos SattControl, ABB och Flextronics. På Flextronics hade jag också hand om underhållsgruppen och köpte in utrustning."
             },
             {
                         "k": [
@@ -146,8 +152,8 @@ DANIEL = {
                                     "tränare",
                                     "instruktör"
                         ],
-                        "have": "Elittränare för landslaget i Short Track, förbundskapten vid VM och EM, OS-plats 2018",
-                        "say": "I elva år var jag elittränare för svenska landslaget i Short Track, med uppdrag som förbundskapten vid världscuper, EM och VM – och vi tog en OS-plats till Pyeongchang 2018."
+                        "have": "Tränare för landslaget i short track i elva år, förbundskapten på VM och EM",
+                        "say": "Vid sidan av jobbet har jag i elva år tränat svenska landslaget i short track och varit förbundskapten på världscuper, EM och VM."
             },
             {
                         "k": [
@@ -165,8 +171,8 @@ DANIEL = {
                                     "järn",
                                     "butik"
                         ],
-                        "have": "Har själv lagt marksten, byggt trädäck och byggt formgjutna skridskor",
-                        "say": "Jag har själv lagt marksten och byggt trädäck, och jag har byggt ett tiotal formgjutna skridskor i läder och kolfiber – så jag kan ge kunderna råd utifrån egen erfarenhet."
+                        "have": "Lägger marksten, bygger trädäck och har byggt egna skridskor",
+                        "say": "Jag lägger marksten och bygger trädäck själv, och jag har byggt ett tiotal egna skridskor i läder och kolfiber. Så jag vet vad kunderna frågar efter."
             },
             {
                         "k": [
@@ -182,8 +188,8 @@ DANIEL = {
                                     "distrikt",
                                     "besök"
                         ],
-                        "have": "B-körkort och egen bil, van att köra mycket i tjänsten",
-                        "say": "Bilkörning har varit en stor del av mitt arbetsliv som säljare, och jag har B-körkort och egen bil."
+                        "have": "B-körkort och egen bil, har kört mycket i jobbet",
+                        "say": "Bilkörning har varit en stor del av mitt liv som säljare, och jag har B-körkort och egen bil."
             },
             {
                         "k": [
@@ -197,25 +203,28 @@ DANIEL = {
                                     "besökare",
                                     "gäst"
                         ],
-                        "have": "Före detta alpin tävlingsåkare, känner Åre sedan 2016",
-                        "say": "Jag tävlade i alpint som ung, och sedan vår son blev skidlärare i Åre 2016 har vi varit där flera gånger om året, både vinter och sommar."
+                        "have": "Tävlade i alpint som ung, har varit i Åre flera gånger om året sedan 2016",
+                        "say": "Jag tävlade i alpint som ung, och sedan vår son började som skidlärare i Åre 2016 har vi varit där flera gånger om året."
             }
         ],
         "draft": {
-            "p1": "Hej!\n\nJag har läst er annons ”{title}” och söker gärna tjänsten. Vid årsskiftet flyttar min fru och jag till Bonäshamn utanför Järpen för att komma närmare familjen – huset är köpt och flytten är långsiktig.",
+            "p1": "Hej!\n\nJag har läst er annons ”{title}” och söker gärna tjänsten. Vid årsskiftet flyttar min fru och jag till Bonäshamn utanför Järpen. Vi har köpt hus där för att komma närmare familjen.",
             "p4": "Jag berättar gärna mer om hur jag kan bidra hos {employer}. Jag är tillgänglig för intervju redan nu, på plats eller digitalt.\n\nVänliga hälsningar\n{name}",
         },
         "travelText": "Arbetsplatsen ligger cirka {km} km ({min}) med bil från hans nya hem i Bonäshamn.",
         "promptHead": "Skriv ett personligt brev på svenska för {name} till tjänsten nedan.",
         "promptRules": [
             "Högst 280 ord, så att det får plats på en A4 tillsammans med rubrik.",
-            "Rak, varm och konkret ton. Inga klichéer som \"jag är en lagspelare\".",
-            "Koppla annonsens viktigaste krav till konkreta erfarenheter i CV:t.",
+                        "Koppla annonsens viktigaste krav till konkreta erfarenheter i CV:t.",
             "Nämn kort att han och frun flyttar till Bonäshamn utanför Järpen vid årsskiftet för att komma närmare familjen, och att huset redan är köpt. {travel}",
             "Daniel är öppen för många slags jobb: försäljning, butik (gärna bygghandel eller sport), teknik och körning. Välj vinkel efter just den här tjänsten och lyft de erfarenheter som passar bäst – för en butikstjänst hantverket och kundmötet, för en säljtjänst siffrorna från Cimco och Lemvigh-Müller.",
             "Använd gärna konkreta siffror från CV:t där de passar, men inte fler än två eller tre.",
             "Hitta inte på siffror, resultat eller erfarenheter som inte står i CV:t.",
             "Svara bara med brevtexten: börja med en hälsning och avsluta med \"Vänliga hälsningar\" och \"{name}\". Ingen rubrik, inga kontaktuppgifter, inga kommentarer.",
+            "Skriv som personen själv pratar: korta, raka meningar på vardaglig men korrekt svenska. Det ska märkas att en människa har skrivit brevet.",
+            "Använd inga tankstreck. Skriv hellre två meningar.",
+            "Använd inte ord och fraser som driven, passionerad, brinner för, robust, noggrann, lagspelare, skapa värde, ständig utveckling eller spelat en avgörande roll.",
+            "Ingen uppräkning i tre led för effekt, ingen sammanfattande slutkläm och inga överdrifter.",
         ],
     },
 }
@@ -287,6 +296,10 @@ PROFIL2 = {
             "Var ärlig om eventuella luckor mot annonsen och visa hur de överbryggs.",
             "Hitta inte på siffror, resultat eller erfarenheter som inte står i CV:t.",
             "Avsluta med \"Med vänlig hälsning\" och namnet. Inga kontaktuppgifter, inga kommentarer.",
+            "Skriv som personen själv pratar: korta, raka meningar på vardaglig men korrekt svenska. Det ska märkas att en människa har skrivit brevet.",
+            "Använd inga tankstreck. Skriv hellre två meningar.",
+            "Använd inte ord och fraser som driven, passionerad, brinner för, robust, noggrann, lagspelare, skapa värde, ständig utveckling eller spelat en avgörande roll.",
+            "Ingen uppräkning i tre led för effekt, ingen sammanfattande slutkläm och inga överdrifter.",
         ],
     },
 }
